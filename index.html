@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Credson UI Kit — 70+ Composants Tailwind CSS Premium</title>
+  <meta name="description" content="Plus de 70 composants Tailwind CSS premium. Dark mode, glassmorphism, animations. Copy & Paste. Gratuit par Credson Studio.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:  '#f5f3ff', 100: '#ede9fe', 200: '#ddd6fe',
+              300: '#c4b5fd', 400: '#a78bfa', 500: '#8b5cf6',
+              600: '#7c3aed', 700: '#6d28d9', 800: '#5b21b6',
+              900: '#4c1d95', 950: '#2e1065',
+            }
+          },
+          animation: { 'shimmer': 'shimmer 2s linear infinite' },
+          keyframes: {
+            shimmer: { from: { backgroundPosition: '200% 0' }, to: { backgroundPosition: '-200% 0' } }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background-color: #030712; color: #f8fafc; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+    .dot-grid {
+      background-image: radial-gradient(circle, #1e293b 1px, transparent 1px);
+      background-size: 22px 22px;
+    }
+
+    /* Glassmorphism */
+    .glass {
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* Noise texture overlay */
+    .noise::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Animated gradient glow */
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.05); }
+    }
+    .glow-anim { animation: pulse-glow 4s ease-in-out infinite; }
+
+    /* Shimmer keyframe */
+    @keyframes shimmer {
+      from { background-position: 200% 0; }
+      to { background-position: -200% 0; }
+    }
+    .animate-shimmer { animation: shimmer 2s linear infinite; }
+
+    /* Sidebar active state */
+    .sidebar-link { transition: all 0.15s ease; }
+    .sidebar-link:hover { background: rgba(139,92,246,0.08); color: #a78bfa; }
+    .sidebar-link.active { background: rgba(139,92,246,0.12); color: #a78bfa; }
+
+    /* Component section transitions */
+    .section { display: none; }
+    .section.active { display: block; }
+
+    /* Toast */
+    @keyframes slideUp {
+      from { transform: translateY(80px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes slideDown {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(80px); opacity: 0; }
+    }
+    .toast-show { animation: slideUp 0.3s ease forwards; }
+    .toast-hide { animation: slideDown 0.3s ease forwards; }
+
+    /* Tag pill */
+    .tag-green  { background: rgba(34,197,94,0.1);  color: #4ade80; border: 1px solid rgba(34,197,94,0.25); }
+    .tag-amber  { background: rgba(245,158,11,0.1); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
+    .tag-red    { background: rgba(239,68,68,0.1);  color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+    .tag-brand  { background: rgba(139,92,246,0.1); color: #a78bfa; border: 1px solid rgba(139,92,246,0.25); }
+    .tag-cyan   { background: rgba(6,182,212,0.1);  color: #22d3ee; border: 1px solid rgba(6,182,212,0.25); }
+    .tag-slate  { background: rgba(100,116,139,0.12); color: #94a3b8; border: 1px solid rgba(100,116,139,0.2); }
+
+    /* Alert soft */
+    .alert-info    { background: rgba(139,92,246,0.08);  border: 1px solid rgba(139,92,246,0.2);  }
+    .alert-success { background: rgba(34,197,94,0.08);   border: 1px solid rgba(34,197,94,0.2);   }
+    .alert-warning { background: rgba(245,158,11,0.08);  border: 1px solid rgba(245,158,11,0.2);  }
+    .alert-danger  { background: rgba(239,68,68,0.08);   border: 1px solid rgba(239,68,68,0.2);   }
+
+    /* Dots ping animation */
+    @keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+    .ping { animation: ping 1.5s cubic-bezier(0,0,0.2,1) infinite; }
+  </style>
+</head>
+<body class="flex h-screen overflow-hidden antialiased">
+
+  <!-- ============================================================ -->
+  <!--  SIDEBAR                                                       -->
+  <!-- ============================================================ -->
+  <aside id="sidebar" class="w-64 flex-shrink-0 hidden md:flex flex-col h-full border-r border-slate-800/70 bg-slate-950/60" style="backdrop-filter:blur(20px);">
+    <!-- Logo -->
+    <div class="h-16 flex items-center px-5 border-b border-slate-800/70 flex-shrink-0">
+      <button onclick="showSection('hero')" class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-cyan-500 flex items-center justify-center font-black text-white text-sm shadow-lg shadow-brand-500/30">C</div>
+        <span class="font-bold text-white tracking-tight">Credson <span class="text-brand-400">UI</span></span>
+      </button>
+    </div>
+
+    <!-- Nav links -->
+    <div class="flex-1 overflow-y-auto py-5 px-3 space-y-6">
+
+      <!-- Éléments -->
+      <div>
+        <p class="text-[10px] font-semibold uppercase tracking-widest text-slate-600 px-3 mb-2">Éléments</p>
+        <div class="space-y-0.5">
+          <button onclick="showSection('buttons')"  id="nav-buttons"  class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">🔘</span> Boutons & CTAs</button>
+          <button onclick="showSection('badges')"   id="nav-badges"   class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">🏷️</span> Badges & Tags</button>
+          <button onclick="showSection('avatars')"  id="nav-avatars"  class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">👤</span> Avatars</button>
+          <button onclick="showSection('inputs')"   id="nav-inputs"   class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">⌨️</span> Inputs & Toggles</button>
+        </div>
+      </div>
+
+      <!-- Composants -->
+      <div>
+        <p class="text-[10px] font-semibold uppercase tracking-widest text-slate-600 px-3 mb-2">Composants</p>
+        <div class="space-y-0.5">
+          <button onclick="showSection('cards')"     id="nav-cards"     class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">🃏</span> Cartes & Pricing</button>
+          <button onclick="showSection('modals')"    id="nav-modals"    class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">🪟</span> Modales & Dialogs</button>
+          <button onclick="showSection('dropdowns')" id="nav-dropdowns" class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">📋</span> Menus Déroulants</button>
+          <button onclick="showSection('alerts')"    id="nav-alerts"    class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">🔔</span> Alertes & Toasts</button>
+        </div>
+      </div>
+
+      <!-- Sections -->
+      <div>
+        <p class="text-[10px] font-semibold uppercase tracking-widest text-slate-600 px-3 mb-2">Sections</p>
+        <div class="space-y-0.5">
+          <button onclick="showSection('navbars')"  id="nav-navbars"  class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">🧭</span> Navbars</button>
+          <button onclick="showSection('heroes')"   id="nav-heroes"   class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">🚀</span> Hero Sections</button>
+          <button onclick="showSection('stats')"    id="nav-stats"    class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">📊</span> Statistiques & FAQ</button>
+          <button onclick="showSection('footers')"  id="nav-footers"  class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">🦶</span> Footers</button>
+        </div>
+      </div>
+
+      <!-- Avancé (Nouveau) -->
+      <div>
+        <p class="text-[10px] font-semibold uppercase tracking-widest text-slate-600 px-3 mb-2">Avancé (Nouveau)</p>
+        <div class="space-y-0.5">
+          <button onclick="showSection('donnees')"     id="nav-donnees"     class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">📊</span> Tableaux & Données</button>
+          <button onclick="showSection('navigation')"  id="nav-navigation"  class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">🧭</span> Navigation & Filtres</button>
+          <button onclick="showSection('contenu')"     id="nav-contenu"     class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">📝</span> Contenu & Social</button>
+          <button onclick="showSection('marketing')"   id="nav-marketing"   class="sidebar-link w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-400 flex items-center gap-2.5"><span class="text-base">✨</span> Marketing & CTAs</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="p-4 border-t border-slate-800/70 flex-shrink-0 space-y-2">
+      <a href="about.html"
+         class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl border border-slate-700/50 bg-slate-800/50 hover:bg-slate-700/50 text-slate-300 text-sm font-medium transition-all hover:border-cyan-500/50 hover:text-cyan-400 group">
+        <svg class="w-4 h-4 text-cyan-500 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        À Propos / Créateur
+      </a>
+      <a href="https://creedemmanuel7-sketch.github.io/mon-portfolio" target="_blank"
+         class="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl border border-slate-700/50 bg-slate-800/50 hover:bg-slate-700/50 text-slate-300 text-sm font-medium transition-all hover:border-brand-500/50 hover:text-brand-400 group">
+        <svg class="w-4 h-4 text-brand-500 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+        </svg>
+        Mon Portfolio
+      </a>
+    </div>
+  </aside>
+
+  <!-- ============================================================ -->
+  <!--  MAIN                                                         -->
+  <!-- ============================================================ -->
+  <div class="flex-1 flex flex-col h-full overflow-hidden">
+    <main id="main-content" class="flex-1 overflow-y-auto p-6 md:p-10">
+      <div class="max-w-5xl mx-auto pb-24">
+
+        <!-- ======================================================= -->
+        <!-- HERO / ACCUEIL                                          -->
+        <!-- ======================================================= -->
+        <section id="section-hero" class="section active">
+          <div class="relative min-h-[80vh] flex flex-col items-center justify-center text-center overflow-hidden rounded-3xl border border-slate-800/70 bg-slate-950 px-6 py-24">
+            <!-- Glow blobs -->
+            <div class="glow-anim absolute -top-24 left-1/4 w-96 h-96 bg-brand-600 rounded-full mix-blend-screen filter blur-[120px] opacity-20 pointer-events-none"></div>
+            <div class="glow-anim absolute -bottom-24 right-1/4 w-96 h-96 bg-cyan-500 rounded-full mix-blend-screen filter blur-[120px] opacity-15 pointer-events-none" style="animation-delay:2s;"></div>
+
+            <!-- Badge -->
+            <div class="relative z-10 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-8 text-sm font-semibold text-brand-300" style="background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.25);">
+              <span class="relative flex h-2 w-2">
+                <span class="ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+              </span>
+              v3.0 — Toutes les sections sont prêtes !
+            </div>
+
+            <!-- Title -->
+            <h1 class="relative z-10 text-5xl md:text-7xl font-black text-white tracking-tight leading-none mb-6">
+              Le UI Kit<br>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-violet-400 to-cyan-400">Tailwind Ultime.</span>
+            </h1>
+            <p class="relative z-10 text-xl text-slate-400 max-w-xl mb-10 leading-relaxed">
+              70+ composants premium. Dark mode natif, glassmorphism, animations. Copiez, collez, expédiez.
+            </p>
+
+            <!-- CTA buttons -->
+            <div class="relative z-10 flex flex-wrap gap-4 justify-center">
+              <button onclick="showSection('buttons')" class="px-8 py-3.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-base shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40 hover:scale-105 transition-all duration-200">
+                Explorer les composants →
+              </button>
+              <button onclick="showSection('heroes')" class="px-8 py-3.5 rounded-xl border border-slate-700 bg-slate-800/60 hover:bg-slate-700/60 text-slate-200 font-semibold text-base transition-all duration-200 hover:border-slate-600">
+                Voir les Sections
+              </button>
+            </div>
+
+            <!-- Stats row -->
+            <div class="relative z-10 mt-16 flex flex-wrap justify-center gap-8">
+              <div class="text-center"><div class="text-3xl font-black text-white">70+</div><div class="text-sm text-slate-500 mt-1">Composants</div></div>
+              <div class="w-px h-12 bg-slate-800 self-center"></div>
+              <div class="text-center"><div class="text-3xl font-black text-white">16</div><div class="text-sm text-slate-500 mt-1">Sections</div></div>
+              <div class="w-px h-12 bg-slate-800 self-center"></div>
+              <div class="text-center"><div class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-cyan-400">100%</div><div class="text-sm text-slate-500 mt-1">Gratuit</div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 1. BOUTONS & CTAs                                       -->
+        <!-- ======================================================= -->
+        <section id="section-buttons" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Boutons & CTAs</h2>
+            <p class="text-slate-400">Des boutons conçus pour maximiser les conversions.</p>
+          </div>
+
+          <!-- Boutons de base -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Boutons Primaires</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                Copier le code
+              </button>
+            </div>
+            <div class="p-10 dot-grid flex flex-wrap gap-4 items-center justify-center" data-component>
+              <button class="px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-sm shadow-lg shadow-brand-500/25 hover:scale-105 transition-all duration-200">Primaire</button>
+              <button class="px-6 py-2.5 rounded-xl border border-brand-500 text-brand-400 font-semibold text-sm hover:bg-brand-500/10 transition-all duration-200">Outline</button>
+              <button class="px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700/50 transition-all duration-200">Secondaire</button>
+              <button class="px-6 py-2.5 rounded-xl bg-red-600/80 hover:bg-red-500 text-white font-semibold text-sm shadow-lg shadow-red-500/20 transition-all duration-200">Destructif</button>
+              <button class="px-6 py-2.5 rounded-xl bg-slate-800/50 text-slate-500 font-semibold text-sm border border-slate-800 cursor-not-allowed" disabled>Désactivé</button>
+            </div>
+          </div>
+
+          <!-- Boutons avec icônes -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Boutons avec Icônes & Loaders</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                Copier le code
+              </button>
+            </div>
+            <div class="p-10 dot-grid flex flex-wrap gap-4 items-center justify-center" data-component>
+              <!-- Bouton icône gauche -->
+              <button class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-sm shadow-lg shadow-brand-500/25 transition-all">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                Télécharger
+              </button>
+              <!-- Bouton avec badge -->
+              <button class="relative inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white font-semibold text-sm transition-all hover:bg-slate-700">
+                Notifications
+                <span class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-brand-500 text-white text-[10px] font-black flex items-center justify-center">3</span>
+              </button>
+              <!-- Loading state -->
+              <button class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-brand-600/50 text-white/70 font-semibold text-sm cursor-wait" disabled>
+                <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                </svg>
+                Chargement...
+              </button>
+            </div>
+          </div>
+
+          <!-- Shimmer Button -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Shimmer Effect Button</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                Copier le code
+              </button>
+            </div>
+            <div class="p-10 dot-grid flex flex-wrap gap-4 items-center justify-center" data-component>
+              <button class="animate-shimmer inline-flex h-12 items-center justify-center rounded-xl border border-slate-700 px-8 font-semibold text-slate-200 transition-colors focus:outline-none" style="background: linear-gradient(110deg, #0a0a12 30%, #1e1b4b 50%, #0a0a12 70%); background-size: 200% 100%;">
+                ✨ Effet Shimmer
+              </button>
+            </div>
+          </div>
+
+          <!-- Gradient CTA -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Gradient CTA Premium</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                Copier le code
+              </button>
+            </div>
+            <div class="p-10 dot-grid flex flex-wrap gap-4 items-center justify-center" data-component>
+              <button class="relative inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl font-bold text-white text-base overflow-hidden group" style="background: linear-gradient(135deg, #7c3aed, #06b6d4);">
+                <span class="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                Commencer maintenant
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 2. BADGES & TAGS                                        -->
+        <!-- ======================================================= -->
+        <section id="section-badges" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Badges & Tags</h2>
+            <p class="text-slate-400">Indicateurs visuels pour statuts, catégories et étiquettes.</p>
+          </div>
+
+          <!-- Badges Soft Color -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Badges de Statut Soft</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                Copier le code
+              </button>
+            </div>
+            <div class="p-10 dot-grid flex flex-wrap gap-3 items-center justify-center" data-component>
+              <span class="tag-green  inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"></span> Actif</span>
+              <span class="tag-amber  inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block"></span> En attente</span>
+              <span class="tag-red    inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-red-400 inline-block"></span> Erreur</span>
+              <span class="tag-brand  inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-brand-400 inline-block"></span> Nouveau</span>
+              <span class="tag-cyan   inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-cyan-400 inline-block"></span> En cours</span>
+              <span class="tag-slate  inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block"></span> Archivé</span>
+            </div>
+          </div>
+
+          <!-- Tags pill -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Tags & Pills de Catégorie</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                Copier le code
+              </button>
+            </div>
+            <div class="p-10 dot-grid flex flex-wrap gap-3 items-center justify-center" data-component>
+              <span class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-white" style="background:#7c3aed;">Design</span>
+              <span class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-900" style="background:#06b6d4;">Développement</span>
+              <span class="px-3.5 py-1.5 rounded-full text-xs font-semibold" style="background:rgba(139,92,246,0.12); color:#a78bfa; border:1px solid rgba(139,92,246,0.3);">Tailwind CSS</span>
+              <span class="px-3.5 py-1.5 rounded-full text-xs font-semibold" style="background:rgba(30,41,59,0.8); color:#94a3b8; border:1px solid #334155;">React</span>
+              <button class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-400 flex items-center gap-1 hover:text-white transition" style="background:rgba(30,41,59,0.8); border:1px solid #334155;">
+                Supabase <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Badge avec live ping -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Badge "Live" Animé</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                Copier le code
+              </button>
+            </div>
+            <div class="p-10 dot-grid flex flex-wrap gap-6 items-center justify-center" data-component>
+              <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full font-semibold text-sm text-white" style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3);">
+                <span class="relative flex h-2.5 w-2.5">
+                  <span class="ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background:#f87171;"></span>
+                  <span class="relative inline-flex rounded-full h-2.5 w-2.5" style="background:#ef4444;"></span>
+                </span>
+                <span style="color:#fca5a5;">En direct</span>
+              </div>
+
+              <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full font-semibold text-sm" style="background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.3);">
+                <span class="relative flex h-2.5 w-2.5">
+                  <span class="ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background:#4ade80;"></span>
+                  <span class="relative inline-flex rounded-full h-2.5 w-2.5" style="background:#22c55e;"></span>
+                </span>
+                <span style="color:#86efac;">Serveurs opérationnels</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 3. AVATARS                                               -->
+        <!-- ======================================================= -->
+        <section id="section-avatars" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Avatars</h2>
+            <p class="text-slate-400">Représentation visuelle des utilisateurs et profils.</p>
+          </div>
+
+          <!-- Avatar Stack -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Avatar Stack "Social Proof"</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid flex flex-col items-center justify-center gap-6" data-component>
+              <div class="flex items-center">
+                <div class="flex -space-x-3">
+                  <img class="inline-block w-10 h-10 rounded-full ring-2 ring-slate-950 object-cover" src="https://i.pravatar.cc/150?u=alice" alt="Alice">
+                  <img class="inline-block w-10 h-10 rounded-full ring-2 ring-slate-950 object-cover" src="https://i.pravatar.cc/150?u=bob" alt="Bob">
+                  <img class="inline-block w-10 h-10 rounded-full ring-2 ring-slate-950 object-cover" src="https://i.pravatar.cc/150?u=carol" alt="Carol">
+                  <img class="inline-block w-10 h-10 rounded-full ring-2 ring-slate-950 object-cover" src="https://i.pravatar.cc/150?u=david" alt="David">
+                  <div class="inline-flex items-center justify-center w-10 h-10 rounded-full ring-2 ring-slate-950 bg-slate-800 text-xs font-bold text-slate-300">+8</div>
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm font-semibold text-white">Rejoignez +2 000 développeurs</p>
+                  <div class="flex text-amber-400 text-xs mt-0.5">★★★★★ <span class="text-slate-400 ml-1">4.9/5</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Avatar avec statut -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Avatars avec Indicateur de Statut</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid flex flex-wrap gap-8 items-end justify-center" data-component>
+              <div class="text-center">
+                <div class="relative inline-block">
+                  <img class="w-16 h-16 rounded-full object-cover border-2 border-slate-800" src="https://i.pravatar.cc/150?u=eva" alt="">
+                  <span class="absolute bottom-0.5 right-0.5 block w-4 h-4 rounded-full bg-green-500 border-2 border-slate-950"></span>
+                </div>
+                <p class="text-xs text-slate-500 mt-2">En ligne</p>
+              </div>
+              <div class="text-center">
+                <div class="relative inline-block">
+                  <img class="w-16 h-16 rounded-full object-cover border-2 border-slate-800" src="https://i.pravatar.cc/150?u=frank" alt="">
+                  <span class="absolute bottom-0.5 right-0.5 block w-4 h-4 rounded-full bg-amber-500 border-2 border-slate-950"></span>
+                </div>
+                <p class="text-xs text-slate-500 mt-2">Absent</p>
+              </div>
+              <div class="text-center">
+                <div class="relative inline-block">
+                  <img class="w-16 h-16 rounded-full object-cover border-2 border-slate-800 opacity-60" src="https://i.pravatar.cc/150?u=grace" alt="">
+                  <span class="absolute bottom-0.5 right-0.5 block w-4 h-4 rounded-full bg-slate-600 border-2 border-slate-950"></span>
+                </div>
+                <p class="text-xs text-slate-500 mt-2">Hors ligne</p>
+              </div>
+              <!-- Avatar initiales -->
+              <div class="text-center">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center font-bold text-xl text-white" style="background: linear-gradient(135deg, #7c3aed, #06b6d4);">CE</div>
+                <p class="text-xs text-slate-500 mt-2">Initiales</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 4. INPUTS & TOGGLES                                     -->
+        <!-- ======================================================= -->
+        <section id="section-inputs" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Inputs & Toggles</h2>
+            <p class="text-slate-400">Champs de saisie, interrupteurs et sélecteurs modernes.</p>
+          </div>
+
+          <!-- Inputs -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Champs de Saisie</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid flex flex-col gap-5 max-w-sm mx-auto w-full" data-component>
+              <!-- Basique -->
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1.5">Adresse email</label>
+                <input type="email" placeholder="vous@exemple.com" class="w-full px-4 py-2.5 rounded-xl text-sm text-white placeholder-slate-500 outline-none transition-all" style="background:#0f172a; border:1px solid #334155;" onfocus="this.style.borderColor='#7c3aed'; this.style.boxShadow='0 0 0 3px rgba(124,58,237,0.15)'" onblur="this.style.borderColor='#334155'; this.style.boxShadow='none'">
+              </div>
+              <!-- Avec icône -->
+              <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1.5">Recherche</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                    <svg class="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                  </div>
+                  <input type="text" placeholder="Rechercher..." class="w-full pl-10 pr-12 py-2.5 rounded-full text-sm text-white placeholder-slate-500 outline-none transition-all" style="background:#0f172a; border:1px solid #334155;" onfocus="this.style.borderColor='#7c3aed'; this.style.boxShadow='0 0 0 3px rgba(124,58,237,0.15)'" onblur="this.style.borderColor='#334155'; this.style.boxShadow='none'">
+                  <div class="absolute inset-y-0 right-2 flex items-center">
+                    <kbd class="px-2 py-0.5 text-[10px] font-medium rounded border text-slate-500" style="background:#1e293b; border-color:#475569;">⌘K</kbd>
+                  </div>
+                </div>
+              </div>
+              <!-- Erreur -->
+              <div>
+                <label class="block text-xs font-semibold text-red-400 mb-1.5">Mot de passe</label>
+                <input type="password" value="abc" class="w-full px-4 py-2.5 rounded-xl text-sm text-red-300 outline-none" style="background:#0f172a; border:1px solid rgba(239,68,68,0.5); box-shadow:0 0 0 3px rgba(239,68,68,0.1)">
+                <p class="text-xs text-red-400 mt-1.5 flex items-center gap-1"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg> Minimum 8 caractères requis</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Toggles & Checkboxes -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Toggles & Cases à cocher</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid flex flex-col gap-5 max-w-sm mx-auto w-full" data-component>
+              <!-- Toggle -->
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-slate-300">Notifications email</span>
+                <button onclick="this.classList.toggle('active')" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300" style="background:#7c3aed;" id="toggle1" onclick="var bg=this.style.background==='#7c3aed'?'#334155':'#7c3aed'; this.style.background=bg; this.querySelector('span').style.transform=bg==='#7c3aed'?'translateX(20px)':'translateX(2px)'">
+                  <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-300" style="transform:translateX(20px);"></span>
+                </button>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-slate-300">Mode sombre</span>
+                <button onclick="var bg=this.style.background;this.style.background=bg==='rgb(51,65,85)'?'#7c3aed':'#334155'; var sp=this.querySelector('span');sp.style.transform=this.style.background==='#7c3aed'?'translateX(20px)':'translateX(2px)'" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300" style="background:#334155;">
+                  <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-300" style="transform:translateX(2px);"></span>
+                </button>
+              </div>
+              <!-- Checkbox custom -->
+              <div class="flex items-center gap-3">
+                <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style="background:#7c3aed;">
+                  <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <span class="text-sm text-slate-300">J'accepte les conditions d'utilisation</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 5. CARTES & PRICING                                     -->
+        <!-- ======================================================= -->
+        <section id="section-cards" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Cartes & Pricing</h2>
+            <p class="text-slate-400">Cartes produit, pricing et feature cards premium.</p>
+          </div>
+
+          <!-- Pricing Cards -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Cartes de Tarification (Pricing)</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid grid grid-cols-1 md:grid-cols-2 gap-5 items-start" data-component>
+              <!-- Free -->
+              <div class="rounded-2xl p-6 border border-slate-800" style="background:#0f172a;">
+                <p class="text-sm font-semibold text-slate-400 mb-1">Gratuit</p>
+                <div class="flex items-end gap-1 mb-4">
+                  <span class="text-4xl font-black text-white">0€</span>
+                  <span class="text-slate-500 mb-1">/mois</span>
+                </div>
+                <ul class="space-y-2.5 mb-6 text-sm">
+                  <li class="flex items-center gap-2 text-slate-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>3 projets maximum</li>
+                  <li class="flex items-center gap-2 text-slate-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>1 Go de stockage</li>
+                  <li class="flex items-center gap-2 text-slate-500"><svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>Support prioritaire</li>
+                </ul>
+                <button class="w-full py-2.5 rounded-xl text-sm font-semibold border border-slate-700 text-slate-300 hover:bg-slate-800 transition">Commencer</button>
+              </div>
+              <!-- Pro (Highlight) -->
+              <div class="rounded-2xl p-6 relative overflow-hidden" style="background: linear-gradient(135deg, #1e1b4b, #0f172a); border:1px solid rgba(139,92,246,0.4);">
+                <div class="absolute top-0 left-0 right-0 h-0.5" style="background: linear-gradient(90deg, #7c3aed, #06b6d4);"></div>
+                <div class="absolute top-3 right-3 px-2 py-0.5 rounded-full text-xs font-bold text-white" style="background:#7c3aed;">Populaire</div>
+                <p class="text-sm font-semibold text-brand-300 mb-1">Pro</p>
+                <div class="flex items-end gap-1 mb-4">
+                  <span class="text-4xl font-black text-white">29€</span>
+                  <span class="text-slate-400 mb-1">/mois</span>
+                </div>
+                <ul class="space-y-2.5 mb-6 text-sm">
+                  <li class="flex items-center gap-2 text-slate-200"><svg class="w-4 h-4 text-brand-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Projets illimités</li>
+                  <li class="flex items-center gap-2 text-slate-200"><svg class="w-4 h-4 text-brand-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>100 Go de stockage</li>
+                  <li class="flex items-center gap-2 text-slate-200"><svg class="w-4 h-4 text-brand-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Support 24/7 prioritaire</li>
+                </ul>
+                <button class="w-full py-2.5 rounded-xl text-sm font-bold text-white transition hover:opacity-90" style="background:linear-gradient(135deg,#7c3aed,#06b6d4); box-shadow:0 8px 24px rgba(124,58,237,0.3);">S'abonner au Pro</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Carte Produit Glassmorphism</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid flex justify-center items-center" data-component>
+              <div class="glass rounded-2xl overflow-hidden w-72 group cursor-pointer hover:scale-[1.02] transition-transform duration-300">
+                <div class="relative h-48 overflow-hidden">
+                  <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80" alt="" class="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500">
+                  <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(3,7,18,0.8) 0%, transparent 60%);"></div>
+                  <div class="absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs font-bold text-white" style="background:rgba(0,0,0,0.5); backdrop-filter:blur(8px);">Nouveau</div>
+                </div>
+                <div class="p-5">
+                  <h3 class="text-lg font-bold text-white mb-1">Montre Connectée X1</h3>
+                  <p class="text-slate-400 text-sm mb-5 leading-relaxed">Design élégant, suivi de santé complet et 14 jours d'autonomie.</p>
+                  <div class="flex items-center justify-between">
+                    <span class="text-2xl font-black text-white">199€</span>
+                    <button class="px-4 py-2 rounded-xl text-sm font-bold text-white" style="background:#7c3aed; box-shadow:0 4px 15px rgba(124,58,237,0.4);">Ajouter ✦</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 6. MODALES & DIALOGS                                    -->
+        <!-- ======================================================= -->
+        <section id="section-modals" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Modales & Dialogs</h2>
+            <p class="text-slate-400">Fenêtres de confirmation, formulaires et alertes.</p>
+          </div>
+
+          <!-- Dialog de confirmation -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Dialog de Confirmation Destructif</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid flex justify-center items-center" data-component>
+              <div class="w-full max-w-md rounded-2xl overflow-hidden" style="background:#0f172a; border:1px solid #1e293b; box-shadow:0 25px 50px rgba(0,0,0,0.6);">
+                <div class="h-1" style="background:linear-gradient(90deg, #ef4444, #f97316);"></div>
+                <div class="p-6">
+                  <div class="flex gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2);">
+                      <svg class="w-5 h-5" style="color:#f87171;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    </div>
+                    <div>
+                      <h3 class="text-base font-bold text-white">Supprimer le projet</h3>
+                      <p class="text-sm text-slate-400 mt-1 leading-relaxed">Cette action est <strong class="text-red-400">irréversible</strong>. Toutes les données seront définitivement perdues.</p>
+                    </div>
+                  </div>
+                  <div class="mt-6 flex justify-end gap-3">
+                    <button class="px-4 py-2 rounded-xl text-sm font-semibold border border-slate-700 text-slate-300 hover:bg-slate-800 transition">Annuler</button>
+                    <button class="px-4 py-2 rounded-xl text-sm font-bold text-white transition hover:opacity-90" style="background:#dc2626; box-shadow:0 4px 15px rgba(220,38,38,0.3);">Oui, supprimer</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal avec overlay -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Modal de Formulaire (avec Overlay)</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid relative flex items-center justify-center min-h-[380px]" data-component>
+              <div class="absolute inset-0 rounded-b-2xl" style="background:rgba(3,7,18,0.6); backdrop-filter:blur(2px);"></div>
+              <div class="relative z-10 w-full max-w-md rounded-2xl p-6 shadow-2xl" style="background:#0f172a; border:1px solid #1e293b;">
+                <div class="flex items-center justify-between mb-5">
+                  <h3 class="text-lg font-bold text-white">Modifier le profil</h3>
+                  <button class="text-slate-500 hover:text-white transition p-1 rounded-lg hover:bg-slate-800">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                  </button>
+                </div>
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">Nom complet</label>
+                    <input type="text" value="Marc Dupont" class="w-full px-4 py-2.5 rounded-xl text-sm text-white outline-none" style="background:#1e293b; border:1px solid #334155;">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">Email</label>
+                    <input type="email" value="marc@exemple.com" class="w-full px-4 py-2.5 rounded-xl text-sm text-white outline-none" style="background:#1e293b; border:1px solid rgba(124,58,237,0.5); box-shadow:0 0 0 3px rgba(124,58,237,0.1);">
+                  </div>
+                </div>
+                <div class="mt-6 flex justify-end gap-3">
+                  <button class="px-5 py-2.5 rounded-xl text-sm font-semibold border border-slate-700 text-slate-300 hover:bg-slate-800 transition">Annuler</button>
+                  <button class="px-5 py-2.5 rounded-xl text-sm font-bold text-white transition" style="background:#7c3aed; box-shadow:0 4px 15px rgba(124,58,237,0.3);">Enregistrer</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 7. MENUS DÉROULANTS                                     -->
+        <!-- ======================================================= -->
+        <section id="section-dropdowns" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Menus Déroulants</h2>
+            <p class="text-slate-400">Dropdowns, menus contextuels et popups.</p>
+          </div>
+
+          <!-- User menu -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Menu Utilisateur</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid flex justify-center items-start min-h-[320px]" data-component>
+              <div class="relative">
+                <button class="flex items-center gap-2.5 px-4 py-2 rounded-full border border-slate-700 bg-slate-800 hover:bg-slate-700 transition">
+                  <img src="https://i.pravatar.cc/150?u=marc" class="w-7 h-7 rounded-full object-cover" alt="">
+                  <span class="text-sm font-medium text-white">Marc Dupont</span>
+                  <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <!-- Menu -->
+                <div class="absolute left-0 mt-2 w-60 rounded-xl shadow-2xl overflow-hidden" style="background:#0f172a; border:1px solid #1e293b;">
+                  <div class="px-4 py-3 border-b border-slate-800">
+                    <p class="text-sm font-semibold text-white">Marc Dupont</p>
+                    <p class="text-xs text-slate-500">marc@exemple.com</p>
+                  </div>
+                  <div class="p-1.5">
+                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-800 transition group">
+                      <svg class="w-4 h-4 text-slate-500 group-hover:text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                      Mon profil
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-800 transition group">
+                      <svg class="w-4 h-4 text-slate-500 group-hover:text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                      Paramètres
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-300 hover:bg-slate-800 transition group">
+                      <svg class="w-4 h-4 text-slate-500 group-hover:text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                      Facturation
+                    </a>
+                  </div>
+                  <div class="p-1.5 border-t border-slate-800">
+                    <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm hover:bg-slate-800 transition" style="color:#f87171;">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                      Déconnexion
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Select custom -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Select Personnalisé</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid flex justify-center items-center" data-component>
+              <div class="relative w-64">
+                <select class="w-full appearance-none px-4 py-3 rounded-xl text-sm text-white outline-none cursor-pointer" style="background:#0f172a; border:1px solid #334155;">
+                  <option>🇫🇷 Français</option>
+                  <option>🇬🇧 English</option>
+                  <option>🇪🇸 Español</option>
+                  <option>🇩🇪 Deutsch</option>
+                </select>
+                <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                  <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 8. ALERTES & TOASTS                                     -->
+        <!-- ======================================================= -->
+        <section id="section-alerts" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Alertes & Toasts</h2>
+            <p class="text-slate-400">Notifications et messages de feedback utilisateur.</p>
+          </div>
+
+          <!-- Alertes soft -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Alertes Soft Color (4 variantes)</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid flex flex-col gap-4 items-center justify-center" data-component>
+              <!-- Info -->
+              <div class="alert-info w-full max-w-lg rounded-xl p-4 flex gap-3">
+                <svg class="h-5 w-5 flex-shrink-0 mt-0.5" style="color:#a78bfa;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div>
+                  <p class="text-sm font-semibold" style="color:#a78bfa;">Nouvelle fonctionnalité disponible</p>
+                  <p class="text-sm mt-0.5" style="color:rgba(196,181,253,0.7);">Vous pouvez maintenant exporter vos données en CSV depuis les paramètres.</p>
+                </div>
+              </div>
+              <!-- Success -->
+              <div class="alert-success w-full max-w-lg rounded-xl p-4 flex gap-3">
+                <svg class="h-5 w-5 flex-shrink-0 mt-0.5" style="color:#4ade80;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div>
+                  <p class="text-sm font-semibold" style="color:#4ade80;">Paiement confirmé !</p>
+                  <p class="text-sm mt-0.5" style="color:rgba(134,239,172,0.7);">Votre abonnement Pro est maintenant actif. Bon développement !</p>
+                </div>
+              </div>
+              <!-- Warning -->
+              <div class="alert-warning w-full max-w-lg rounded-xl p-4 flex gap-3">
+                <svg class="h-5 w-5 flex-shrink-0 mt-0.5" style="color:#fbbf24;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <div>
+                  <p class="text-sm font-semibold" style="color:#fbbf24;">Carte bancaire bientôt expirée</p>
+                  <p class="text-sm mt-0.5" style="color:rgba(252,211,77,0.7);">Votre carte expire dans 7 jours. Mettez à jour vos informations de paiement.</p>
+                </div>
+              </div>
+              <!-- Danger -->
+              <div class="alert-danger w-full max-w-lg rounded-xl p-4 flex gap-3">
+                <svg class="h-5 w-5 flex-shrink-0 mt-0.5" style="color:#f87171;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div>
+                  <p class="text-sm font-semibold" style="color:#f87171;">Accès refusé</p>
+                  <p class="text-sm mt-0.5" style="color:rgba(252,165,165,0.7);">Vous n'avez pas les droits nécessaires pour effectuer cette action.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Toast notifications -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Toast Notifications</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid flex flex-col gap-3 items-center" data-component>
+              <!-- Toast success -->
+              <div class="flex items-center gap-3 px-4 py-3 rounded-xl w-full max-w-sm shadow-xl" style="background:#0f172a; border:1px solid #1e293b; box-shadow:0 20px 40px rgba(0,0,0,0.5);">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(34,197,94,0.15);">
+                  <svg class="w-4 h-4" style="color:#4ade80;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm font-semibold text-white">Fichier sauvegardé</p>
+                  <p class="text-xs text-slate-500">projet_web.zip · Il y a 2s</p>
+                </div>
+                <button class="text-slate-600 hover:text-slate-400 transition p-1">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+              </div>
+              <!-- Toast error -->
+              <div class="flex items-center gap-3 px-4 py-3 rounded-xl w-full max-w-sm shadow-xl" style="background:#0f172a; border:1px solid #1e293b; box-shadow:0 20px 40px rgba(0,0,0,0.5);">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.15);">
+                  <svg class="w-4 h-4" style="color:#f87171;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm font-semibold text-white">Erreur de connexion</p>
+                  <p class="text-xs text-slate-500">Impossible de joindre le serveur</p>
+                </div>
+                <button class="text-slate-600 hover:text-slate-400 transition p-1">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 9. NAVBARS                                              -->
+        <!-- ======================================================= -->
+        <section id="section-navbars" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Navbars</h2>
+            <p class="text-slate-400">Barres de navigation modernes et réactives.</p>
+          </div>
+
+          <!-- Navbar flottante -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Navbar Flottante Pill</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid flex justify-center items-center min-h-[200px]" data-component>
+              <nav class="w-full flex items-center justify-between px-6 py-3 rounded-full" style="background:rgba(15,23,42,0.85); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.06); box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+                <!-- Logo -->
+                <div class="flex items-center gap-2.5">
+                  <div class="w-9 h-9 rounded-full flex items-center justify-center font-black text-white text-sm" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);">C</div>
+                  <span class="font-bold text-white text-base">Credson</span>
+                </div>
+                <!-- Links -->
+                <ul class="hidden md:flex items-center gap-1 p-1 rounded-full" style="background:rgba(30,41,59,0.5); border:1px solid rgba(255,255,255,0.05);">
+                  <li><a href="#" class="block px-4 py-1.5 rounded-full text-sm font-semibold text-white" style="background:rgba(100,116,139,0.4);">Accueil</a></li>
+                  <li><a href="#" class="block px-4 py-1.5 rounded-full text-sm font-medium text-slate-400 hover:text-white transition">Produits</a></li>
+                  <li><a href="#" class="block px-4 py-1.5 rounded-full text-sm font-medium text-slate-400 hover:text-white transition">Tarifs</a></li>
+                  <li><a href="#" class="block px-4 py-1.5 rounded-full text-sm font-medium text-slate-400 hover:text-white transition">Blog</a></li>
+                </ul>
+                <!-- CTA -->
+                <button class="hidden md:block px-5 py-2 rounded-full text-sm font-bold text-white hover:opacity-90 transition" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);">S'inscrire</button>
+                <!-- Burger mobile -->
+                <button class="md:hidden text-slate-400">
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+              </nav>
+            </div>
+          </div>
+
+          <!-- Navbar SaaS Dashboard -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Navbar Dashboard avec Actions</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid" data-component>
+              <nav class="flex items-center justify-between px-5 py-3" style="background:#0f172a; border:1px solid #1e293b; border-radius:12px;">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-white text-xs" style="background:#7c3aed;">C</div>
+                  <div class="flex items-center gap-1 text-slate-400 text-sm">
+                    <span>Credson</span>
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    <span class="text-white font-semibold">Mon Projet</span>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <!-- Search -->
+                  <button class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                  </button>
+                  <!-- Bell with badge -->
+                  <button class="relative p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                    <span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-red-500"></span>
+                  </button>
+                  <!-- Avatar -->
+                  <img src="https://i.pravatar.cc/150?u=user1" class="w-8 h-8 rounded-full object-cover cursor-pointer hover:ring-2 transition" style="--tw-ring-color:#7c3aed;" alt="">
+                </div>
+              </nav>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 10. HERO SECTIONS                                       -->
+        <!-- ======================================================= -->
+        <section id="section-heroes" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Hero Sections</h2>
+            <p class="text-slate-400">Sections d'accueil pour landing pages et SaaS.</p>
+          </div>
+
+          <!-- Hero SaaS -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Hero SaaS avec Glow</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-4 dot-grid" data-component>
+              <section class="relative overflow-hidden rounded-2xl text-center px-6 pt-20 pb-24" style="background:#030712;">
+                <!-- Glow blobs -->
+                <div class="absolute top-0 left-1/4 w-80 h-80 rounded-full pointer-events-none" style="background:#7c3aed; filter:blur(100px); opacity:0.2; transform:translateY(-50%);"></div>
+                <div class="absolute top-0 right-1/4 w-80 h-80 rounded-full pointer-events-none" style="background:#06b6d4; filter:blur(100px); opacity:0.15; transform:translateY(-50%);"></div>
+
+                <div class="relative z-10">
+                  <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-sm font-semibold mb-8" style="background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.25); color:#a78bfa;">
+                    🎉 Nouvelle version 2.0 disponible
+                  </div>
+                  <h1 class="text-5xl md:text-6xl font-black text-white tracking-tight mb-6 leading-tight">
+                    Construisez plus vite.<br>
+                    <span style="background: linear-gradient(90deg, #a78bfa, #22d3ee); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Scalez sans limite.</span>
+                  </h1>
+                  <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                    Le framework ultime pour les startups ambitieuses. Déployez votre produit en semaines, pas en mois.
+                  </p>
+                  <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="px-8 py-3.5 rounded-full font-bold text-slate-900 text-base hover:opacity-90 transition hover:scale-105" style="background:white;">
+                      Commencer gratuitement →
+                    </button>
+                    <button class="px-8 py-3.5 rounded-full font-semibold text-white text-base transition hover:border-slate-600 flex items-center justify-center gap-2" style="background:rgba(30,41,59,0.8); border:1px solid #334155;">
+                      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                      Voir la démo
+                    </button>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <!-- Hero minimal centré -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Hero Centré Minimal</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-4 dot-grid" data-component>
+              <div class="text-center py-20 px-6 rounded-2xl" style="background:#030712; border:1px solid #1e293b;">
+                <h1 class="text-4xl md:text-5xl font-black text-white mb-4">Design <span style="color:#a78bfa;">moderne</span>, code <span style="color:#22d3ee;">propre.</span></h1>
+                <p class="text-lg text-slate-400 max-w-lg mx-auto mb-8">Templates Tailwind CSS premium, prêts à copier-coller dans votre prochain projet.</p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                  <button class="px-7 py-3 rounded-xl font-bold text-white" style="background:#7c3aed;">Explorer →</button>
+                  <button class="px-7 py-3 rounded-xl font-semibold text-slate-300" style="background:#1e293b; border:1px solid #334155;">Voir les démos</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 11. STATISTIQUES & FAQ                                  -->
+        <!-- ======================================================= -->
+        <section id="section-stats" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Statistiques & FAQ</h2>
+            <p class="text-slate-400">Sections de chiffres clés et accordéons de questions fréquentes.</p>
+          </div>
+
+          <!-- Stats grid -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Grille de Statistiques</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid grid grid-cols-2 md:grid-cols-4 gap-4" data-component>
+              <div class="text-center py-8 px-4 rounded-2xl border border-slate-800" style="background:#0f172a;">
+                <div class="text-4xl font-black text-white mb-1">8k+</div>
+                <div class="text-xs font-medium text-slate-500">Utilisateurs actifs</div>
+              </div>
+              <div class="text-center py-8 px-4 rounded-2xl relative overflow-hidden" style="background:linear-gradient(135deg, #1e1b4b, #0f172a); border:1px solid rgba(139,92,246,0.3);">
+                <div class="text-4xl font-black mb-1" style="background: linear-gradient(135deg, #a78bfa, #22d3ee); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">200x</div>
+                <div class="text-xs font-medium text-slate-400">Plus rapide</div>
+              </div>
+              <div class="text-center py-8 px-4 rounded-2xl border border-slate-800" style="background:#0f172a;">
+                <div class="text-4xl font-black text-white mb-1">99.9%</div>
+                <div class="text-xs font-medium text-slate-500">Uptime garanti</div>
+              </div>
+              <div class="text-center py-8 px-4 rounded-2xl border border-slate-800" style="background:#0f172a;">
+                <div class="text-4xl font-black text-white mb-1">24/7</div>
+                <div class="text-xs font-medium text-slate-500">Support premium</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ Accordéon -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">FAQ Accordéon</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid" data-component>
+              <div class="max-w-2xl mx-auto space-y-3">
+                <!-- Open item -->
+                <div class="rounded-xl overflow-hidden" style="border:1px solid rgba(139,92,246,0.3); background:rgba(139,92,246,0.05);">
+                  <button class="w-full flex items-center justify-between px-5 py-4 text-left" onclick="toggleFaq(this)">
+                    <span class="font-semibold text-white text-sm">Puis-je utiliser ces composants dans des projets commerciaux ?</span>
+                    <svg class="w-4 h-4 flex-shrink-0 transition-transform duration-300 rotate-180" style="color:#a78bfa;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                  </button>
+                  <div class="px-5 pb-4 faq-body">
+                    <p class="text-sm text-slate-400 leading-relaxed">Oui, absolument ! Tous les composants sont distribués sous licence MIT. Vous pouvez les utiliser librement dans vos projets personnels et commerciaux sans aucune restriction ni attribution obligatoire.</p>
+                  </div>
+                </div>
+                <!-- Closed items -->
+                <div class="rounded-xl overflow-hidden" style="border:1px solid #1e293b; background:#0f172a;">
+                  <button class="w-full flex items-center justify-between px-5 py-4 text-left" onclick="toggleFaq(this)">
+                    <span class="font-semibold text-slate-300 text-sm">Comment mettre à jour vers les nouvelles versions ?</span>
+                    <svg class="w-4 h-4 flex-shrink-0 transition-transform duration-300" style="color:#64748b;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                  </button>
+                  <div class="px-5 pb-0 faq-body hidden">
+                    <p class="text-sm text-slate-400 leading-relaxed pb-4">Rejoignez le canal WhatsApp Credson Studio pour recevoir les notifications de nouvelles versions. Vous pouvez aussi surveiller le dépôt GitHub.</p>
+                  </div>
+                </div>
+                <div class="rounded-xl overflow-hidden" style="border:1px solid #1e293b; background:#0f172a;">
+                  <button class="w-full flex items-center justify-between px-5 py-4 text-left" onclick="toggleFaq(this)">
+                    <span class="font-semibold text-slate-300 text-sm">Est-ce compatible avec Tailwind CSS v3 et v4 ?</span>
+                    <svg class="w-4 h-4 flex-shrink-0 transition-transform duration-300" style="color:#64748b;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                  </button>
+                  <div class="px-5 pb-0 faq-body hidden">
+                    <p class="text-sm text-slate-400 leading-relaxed pb-4">Le projet est configuré pour Tailwind CSS v3 (LTS). La migration vers v4 est prévue dans une prochaine version.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 12. FOOTERS                                             -->
+        <!-- ======================================================= -->
+        <section id="section-footers" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Footers</h2>
+            <p class="text-slate-400">Pieds de page professionnels pour landing pages et SaaS.</p>
+          </div>
+
+          <!-- Footer classique -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Footer Multi-Colonnes SaaS</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-6 dot-grid" data-component>
+              <footer class="rounded-2xl px-8 pt-12 pb-6" style="background:#030712; border:1px solid #1e293b;">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pb-10 border-b border-slate-800">
+                  <!-- Brand -->
+                  <div class="col-span-2 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                      <div class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-white text-sm" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);">C</div>
+                      <span class="font-bold text-white">Credson Studio</span>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed">Des templates et ressources premium pour créateurs et développeurs.</p>
+                    <!-- Social icons -->
+                    <div class="flex gap-3 mt-5">
+                      <a href="#" class="text-slate-600 hover:text-white transition"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></a>
+                      <a href="#" class="text-slate-600 hover:text-white transition"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+                    </div>
+                  </div>
+                  <!-- Col 2 -->
+                  <div>
+                    <h4 class="text-sm font-semibold text-white mb-4">Produits</h4>
+                    <ul class="space-y-2.5 text-sm">
+                      <li><a href="#" class="text-slate-500 hover:text-brand-400 transition">UI Kit Tailwind</a></li>
+                      <li><a href="#" class="text-slate-500 hover:text-brand-400 transition">SaaS Boilerplate</a></li>
+                      <li><a href="#" class="text-slate-500 hover:text-brand-400 transition">Portfolio Premium</a></li>
+                      <li><a href="#" class="text-slate-500 hover:text-brand-400 transition flex items-center gap-1.5">Link in Bio <span class="tag-green px-1.5 py-0.5 rounded text-[10px]">New</span></a></li>
+                    </ul>
+                  </div>
+                  <!-- Col 3 -->
+                  <div>
+                    <h4 class="text-sm font-semibold text-white mb-4">Ressources</h4>
+                    <ul class="space-y-2.5 text-sm">
+                      <li><a href="#" class="text-slate-500 hover:text-brand-400 transition">Documentation</a></li>
+                      <li><a href="#" class="text-slate-500 hover:text-brand-400 transition">GitHub</a></li>
+                      <li><a href="#" class="text-slate-500 hover:text-brand-400 transition">Blog</a></li>
+                      <li><a href="#" class="text-slate-500 hover:text-brand-400 transition">Changelog</a></li>
+                    </ul>
+                  </div>
+                  <!-- Col 4 -->
+                  <div>
+                    <h4 class="text-sm font-semibold text-white mb-4">Newsletter</h4>
+                    <p class="text-sm text-slate-500 mb-3">Recevez les nouvelles ressources gratuites.</p>
+                    <div class="flex gap-2">
+                      <input type="email" placeholder="Email..." class="flex-1 px-3 py-2 rounded-lg text-xs text-white placeholder-slate-600 outline-none" style="background:#1e293b; border:1px solid #334155;">
+                      <button class="px-3 py-2 rounded-lg text-xs font-bold text-white flex-shrink-0" style="background:#7c3aed;">OK</button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Bottom -->
+                <div class="pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                  <p class="text-xs text-slate-600">© 2026 Credson Studio. Tous droits réservés. Fait avec ❤️ au Togo.</p>
+                  <div class="flex gap-6 text-xs text-slate-600">
+                    <a href="#" class="hover:text-slate-400 transition">Confidentialité</a>
+                    <a href="#" class="hover:text-slate-400 transition">CGU</a>
+                    <a href="#" class="hover:text-slate-400 transition">Cookies</a>
+                  </div>
+                </div>
+              </footer>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 13. TABLEAUX & DONNÉES                                  -->
+        <!-- ======================================================= -->
+        <section id="section-donnees" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Tableaux & Données</h2>
+            <p class="text-slate-400">Visualisations de données, tables complexes et indicateurs clés.</p>
+          </div>
+
+          <!-- Component 1: Tableau Simple Glass -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Tableau Simple Glassmorphism</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-6 dot-grid flex justify-center items-center" data-component>
+              <div class="w-full overflow-x-auto glass rounded-xl border border-slate-800">
+                <table class="w-full text-left text-sm">
+                  <thead class="border-b border-slate-800 bg-slate-950/40 text-slate-400 text-xs uppercase tracking-wider font-semibold">
+                    <tr>
+                      <th class="px-6 py-4">Utilisateur</th>
+                      <th class="px-6 py-4">Rôle</th>
+                      <th class="px-6 py-4">Statut</th>
+                      <th class="px-6 py-4 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/50 text-slate-300">
+                    <tr class="hover:bg-slate-800/20 transition-colors">
+                      <td class="px-6 py-4 font-medium text-white">Alexandre Kouamé</td>
+                      <td class="px-6 py-4">Lead Designer</td>
+                      <td class="px-6 py-4"><span class="tag-green px-2 py-0.5 rounded text-xs font-semibold">Actif</span></td>
+                      <td class="px-6 py-4 text-right"><button class="text-brand-400 hover:text-brand-300 font-semibold transition">Éditer</button></td>
+                    </tr>
+                    <tr class="hover:bg-slate-800/20 transition-colors">
+                      <td class="px-6 py-4 font-medium text-white">Chloé Dubois</td>
+                      <td class="px-6 py-4">Front-end Dev</td>
+                      <td class="px-6 py-4"><span class="tag-cyan px-2 py-0.5 rounded text-xs font-semibold">En cours</span></td>
+                      <td class="px-6 py-4 text-right"><button class="text-brand-400 hover:text-brand-300 font-semibold transition">Éditer</button></td>
+                    </tr>
+                    <tr class="hover:bg-slate-800/20 transition-colors">
+                      <td class="px-6 py-4 font-medium text-white">Emmanuel Creed</td>
+                      <td class="px-6 py-4">Product Owner</td>
+                      <td class="px-6 py-4"><span class="tag-slate px-2 py-0.5 rounded text-xs font-semibold">Archivé</span></td>
+                      <td class="px-6 py-4 text-right"><button class="text-brand-400 hover:text-brand-300 font-semibold transition">Éditer</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 2: Tableau avec Pagination & Filtres -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Tableau de Données Complexe</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-6 dot-grid flex justify-center items-center" data-component>
+              <div class="w-full rounded-xl border border-slate-800 bg-slate-950/40 overflow-hidden">
+                <div class="p-4 border-b border-slate-800 flex flex-col sm:flex-row gap-3 items-center justify-between">
+                  <input type="text" placeholder="Rechercher..." class="px-3 py-1.5 rounded-lg text-xs text-white placeholder-slate-500 outline-none w-full sm:max-w-xs" style="background:#0f172a; border:1px solid #334155;">
+                  <div class="flex gap-2">
+                    <button class="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 transition">Filtrer</button>
+                    <button class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 text-slate-300 hover:bg-slate-800 transition">Exporter</button>
+                  </div>
+                </div>
+                <table class="w-full text-left text-sm">
+                  <tbody class="divide-y divide-slate-800/50 text-slate-300">
+                    <tr class="hover:bg-slate-850 transition">
+                      <td class="px-6 py-3.5 flex items-center gap-3">
+                        <img src="https://i.pravatar.cc/150?u=johnd" class="w-8 h-8 rounded-full object-cover">
+                        <div>
+                          <p class="font-semibold text-white text-xs">John Doe</p>
+                          <p class="text-[10px] text-slate-500">john@chariow.com</p>
+                        </div>
+                      </td>
+                      <td class="px-6 py-3.5 text-xs">Abonnement Pro</td>
+                      <td class="px-6 py-3.5"><span class="tag-green px-2 py-0.5 rounded text-[10px] font-bold">Actif</span></td>
+                      <td class="px-6 py-3.5 text-right font-black text-white text-xs">29,00 €</td>
+                    </tr>
+                    <tr class="hover:bg-slate-850 transition">
+                      <td class="px-6 py-3.5 flex items-center gap-3">
+                        <img src="https://i.pravatar.cc/150?u=sarah" class="w-8 h-8 rounded-full object-cover">
+                        <div>
+                          <p class="font-semibold text-white text-xs">Sarah Jenkins</p>
+                          <p class="text-[10px] text-slate-500">sarah@chariow.com</p>
+                        </div>
+                      </td>
+                      <td class="px-6 py-3.5 text-xs">Abonnement Free</td>
+                      <td class="px-6 py-3.5"><span class="tag-slate px-2 py-0.5 rounded text-[10px] font-bold">Free</span></td>
+                      <td class="px-6 py-3.5 text-right font-black text-white text-xs">0,00 €</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="p-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-500">
+                  <span>Page 1 sur 12</span>
+                  <div class="flex gap-2">
+                    <button class="px-3 py-1 rounded border border-slate-800 hover:bg-slate-900 transition">Précédent</button>
+                    <button class="px-3 py-1 rounded border border-slate-800 hover:bg-slate-900 transition">Suivant</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 3: Tableau Kanban Lite -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Kanban Board Lite</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-6 dot-grid flex justify-center items-center" data-component>
+              <div class="w-80 rounded-xl border border-slate-800 p-4" style="background:#0f172a;">
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-brand-500 inline-block"></span>
+                    <span class="font-bold text-white text-xs uppercase tracking-wider">En Cours</span>
+                  </div>
+                  <span class="px-2 py-0.5 text-[10px] font-bold rounded bg-slate-800 text-slate-400 border border-slate-700">2</span>
+                </div>
+                <div class="space-y-3">
+                  <div class="p-3 rounded-lg border border-slate-800 hover:border-slate-700 cursor-grab active:cursor-grabbing transition" style="background:#030712;">
+                    <span class="tag-brand px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">UI Design</span>
+                    <h4 class="font-semibold text-white text-xs mt-2">Finaliser le Kit de Composants</h4>
+                    <p class="text-[10px] text-slate-500 mt-1 leading-relaxed">Créer les 35 nouveaux composants interactifs pour WhatsApp.</p>
+                    <div class="flex items-center justify-between mt-3">
+                      <div class="flex -space-x-1">
+                        <img src="https://i.pravatar.cc/150?u=userA" class="w-5 h-5 rounded-full border border-slate-950">
+                        <img src="https://i.pravatar.cc/150?u=userB" class="w-5 h-5 rounded-full border border-slate-950">
+                      </div>
+                      <span class="text-[9px] text-slate-500 flex items-center gap-1">📅 8 Juin</span>
+                    </div>
+                  </div>
+                  <div class="p-3 rounded-lg border border-slate-800 hover:border-slate-700 cursor-grab active:cursor-grabbing transition" style="background:#030712;">
+                    <span class="tag-cyan px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider">Dev</span>
+                    <h4 class="font-semibold text-white text-xs mt-2">Optimisation Web Image</h4>
+                    <p class="text-[10px] text-slate-500 mt-1 leading-relaxed">Corriger les scripts d'export compressés.</p>
+                    <div class="flex items-center justify-between mt-3">
+                      <img src="https://i.pravatar.cc/150?u=userC" class="w-5 h-5 rounded-full border border-slate-950">
+                      <span class="text-[9px] text-slate-500 flex items-center gap-1">📅 12 Juin</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 4: Barre de Progression Circulaire -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Barre Circulaire Glow</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid flex justify-center items-center" data-component>
+              <div class="relative w-36 h-36 flex items-center justify-center">
+                <svg class="w-full h-full transform -rotate-90">
+                  <circle cx="72" cy="72" r="54" stroke="#1e293b" stroke-width="8" fill="transparent" />
+                  <circle cx="72" cy="72" r="54" stroke="url(#gradientCirc)" stroke-width="8" fill="transparent" stroke-dasharray="339.2" stroke-dashoffset="84.8" stroke-linecap="round" style="filter: drop-shadow(0 0 6px rgba(124,58,237,0.5));" />
+                  <defs>
+                    <linearGradient id="gradientCirc" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#8b5cf6" />
+                      <stop offset="100%" stop-color="#06b6d4" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div class="absolute text-center">
+                  <span class="text-2xl font-black text-white">75%</span>
+                  <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-0.5">Complété</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 5: Barre de Progression Linéaire Shimmer -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Progress Bar Shimmer</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-10 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="w-full max-w-md">
+                <div class="flex items-center justify-between text-xs mb-1.5 font-semibold text-slate-400">
+                  <span>Stockage Cloud Utilisé</span>
+                  <span class="text-white">6.4 Go / 10 Go</span>
+                </div>
+                <div class="w-full h-3 rounded-full overflow-hidden bg-slate-900 border border-slate-800 relative">
+                  <div class="animate-shimmer absolute top-0 bottom-0 left-0 rounded-full" style="width:64%; background: linear-gradient(110deg, #7c3aed 30%, #a78bfa 50%, #7c3aed 70%); background-size: 200% 100%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 6: Grille de Fichiers -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Gestionnaire de Fichiers</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-6 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
+                <div class="p-3.5 rounded-xl border border-slate-800 flex items-center justify-between hover:bg-slate-900/50 hover:border-slate-700 transition cursor-pointer" style="background:#0f172a;">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.25);">
+                      <span class="text-red-500 font-bold text-xs">PDF</span>
+                    </div>
+                    <div>
+                      <p class="text-xs font-semibold text-white">cahier_des_charges.pdf</p>
+                      <p class="text-[10px] text-slate-500">2.4 Mo · Modifié hier</p>
+                    </div>
+                  </div>
+                  <button class="text-slate-500 hover:text-white transition"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button>
+                </div>
+                <div class="p-3.5 rounded-xl border border-slate-800 flex items-center justify-between hover:bg-slate-900/50 hover:border-slate-700 transition cursor-pointer" style="background:#0f172a;">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:rgba(124,58,237,0.1); border:1px solid rgba(124,58,237,0.25);">
+                      <span class="text-brand-400 font-bold text-xs">ZIP</span>
+                    </div>
+                    <div>
+                      <p class="text-xs font-semibold text-white">ui_kit_assets.zip</p>
+                      <p class="text-[10px] text-slate-500">18.1 Mo · Modifié le 05/06</p>
+                    </div>
+                  </div>
+                  <button class="text-slate-500 hover:text-white transition"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 7: Graphique Line Chart SVG -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Graphique Courbe Neon</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-6 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="w-full max-w-md p-5 rounded-2xl border border-slate-800 bg-slate-950/40 relative overflow-hidden">
+                <div class="flex items-center justify-between mb-4">
+                  <div>
+                    <span class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Trafic Mensuel</span>
+                    <h4 class="text-xl font-black text-white">45 280 <span class="text-xs text-green-400 font-bold">+12%</span></h4>
+                  </div>
+                </div>
+                <svg viewBox="0 0 300 120" class="w-full h-auto overflow-visible">
+                  <!-- Grid -->
+                  <line x1="0" y1="20" x2="300" y2="20" stroke="#1e293b" stroke-dasharray="3" />
+                  <line x1="0" y1="60" x2="300" y2="60" stroke="#1e293b" stroke-dasharray="3" />
+                  <line x1="0" y1="100" x2="300" y2="100" stroke="#1e293b" stroke-dasharray="3" />
+                  <!-- Line path -->
+                  <path d="M 0 90 Q 50 80 100 50 T 200 40 T 300 20" fill="none" stroke="#a78bfa" stroke-width="3" style="filter: drop-shadow(0 0 6px rgba(139,92,246,0.4));" />
+                  <path d="M 0 90 Q 50 80 100 50 T 200 40 T 300 20 L 300 120 L 0 120 Z" fill="url(#lineGradient)" />
+                  <!-- Dot markers -->
+                  <circle cx="200" cy="40" r="4" fill="#22d3ee" stroke="#030712" stroke-width="2" />
+                  <defs>
+                    <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(167,139,250,0.15)" />
+                      <stop offset="100%" stop-color="rgba(167,139,250,0)" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 8: Graphique Bar Chart SVG -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Graphique Barres Verticales</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-6 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="w-full max-w-md p-5 rounded-2xl border border-slate-800 bg-slate-950/40">
+                <div class="flex items-center justify-between mb-6">
+                  <div>
+                    <span class="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">Ventes Hebdomadaires</span>
+                    <h4 class="text-xl font-black text-white">4 820 €</h4>
+                  </div>
+                </div>
+                <div class="flex justify-between items-end h-32 pt-2 gap-3">
+                  <div class="flex flex-col items-center flex-1">
+                    <div class="w-full rounded-t-md hover:opacity-80 transition" style="height:40%; background:linear-gradient(to top, #7c3aed, #c084fc);"></div>
+                    <span class="text-[9px] text-slate-600 mt-2">Lun</span>
+                  </div>
+                  <div class="flex flex-col items-center flex-1">
+                    <div class="w-full rounded-t-md hover:opacity-80 transition" style="height:65%; background:linear-gradient(to top, #7c3aed, #c084fc);"></div>
+                    <span class="text-[9px] text-slate-600 mt-2">Mar</span>
+                  </div>
+                  <div class="flex flex-col items-center flex-1">
+                    <div class="w-full rounded-t-md hover:opacity-80 transition" style="height:90%; background:linear-gradient(to top, #7c3aed, #c084fc);"></div>
+                    <span class="text-[9px] text-slate-600 mt-2">Mer</span>
+                  </div>
+                  <div class="flex flex-col items-center flex-1">
+                    <div class="w-full rounded-t-md hover:opacity-80 transition" style="height:55%; background:linear-gradient(to top, #7c3aed, #c084fc);"></div>
+                    <span class="text-[9px] text-slate-600 mt-2">Jeu</span>
+                  </div>
+                  <div class="flex flex-col items-center flex-1">
+                    <div class="w-full rounded-t-md hover:opacity-80 transition" style="height:78%; background:linear-gradient(to top, #7c3aed, #c084fc);"></div>
+                    <span class="text-[9px] text-slate-600 mt-2">Ven</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 14. NAVIGATION & FILTRES                                -->
+        <!-- ======================================================= -->
+        <section id="section-navigation" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Navigation & Filtres</h2>
+            <p class="text-slate-400">Onglets, barres de recherche avancées et éléments de pagination.</p>
+          </div>
+
+          <!-- Component 9: Onglets Premium (Glass Tabs) -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Onglets Glassmorphism</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center" data-component>
+              <div class="flex p-1 rounded-xl border border-slate-800 bg-slate-950/80 w-fit">
+                <button class="px-4 py-2 rounded-lg text-xs font-semibold text-white" style="background:rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.25);">Général</button>
+                <button class="px-4 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">Sécurité</button>
+                <button class="px-4 py-2 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">Facturation</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 10: Fil d'Ariane (Breadcrumbs) -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Fil d'Ariane (Breadcrumbs)</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center" data-component>
+              <nav class="flex items-center gap-2 text-xs font-medium text-slate-500">
+                <a href="#" class="hover:text-white transition flex items-center gap-1">🏠 Dashboard</a>
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <a href="#" class="hover:text-white transition">Paramètres</a>
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                <span class="text-brand-400 font-semibold">Profil</span>
+              </nav>
+            </div>
+          </div>
+
+          <!-- Component 11: Pagination Classique -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Pagination Classique</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center" data-component>
+              <div class="flex items-center gap-1.5">
+                <button class="w-8 h-8 rounded-lg border border-slate-800 flex items-center justify-center hover:bg-slate-900 text-slate-400 hover:text-white transition">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button class="w-8 h-8 rounded-lg border border-brand-500/30 flex items-center justify-center bg-brand-500/10 text-brand-400 font-bold text-xs">1</button>
+                <button class="w-8 h-8 rounded-lg border border-slate-800 flex items-center justify-center hover:bg-slate-900 text-slate-400 hover:text-white font-medium text-xs transition">2</button>
+                <button class="w-8 h-8 rounded-lg border border-slate-800 flex items-center justify-center hover:bg-slate-900 text-slate-400 hover:text-white font-medium text-xs transition">3</button>
+                <span class="text-slate-600 px-1">...</span>
+                <button class="w-8 h-8 rounded-lg border border-slate-800 flex items-center justify-center hover:bg-slate-900 text-slate-400 hover:text-white font-medium text-xs transition">10</button>
+                <button class="w-8 h-8 rounded-lg border border-slate-800 flex items-center justify-center hover:bg-slate-900 text-slate-400 hover:text-white transition">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 12: Menu Latéral Mini -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Mini Sidebar Nav</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center" data-component>
+              <div class="flex flex-col gap-2.5 p-2 rounded-2xl border border-slate-800" style="background:#0f172a;">
+                <button class="w-10 h-10 rounded-xl flex items-center justify-center bg-brand-500/10 border border-brand-500/20 text-brand-400"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg></button>
+                <button class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></button>
+                <button class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800 transition"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 13: Barre de Recherche avec Filtre -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Barre de Recherche Filtrable</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="flex w-full max-w-md rounded-xl border border-slate-800 overflow-hidden bg-slate-950/40">
+                <select class="bg-slate-900 text-slate-300 text-xs px-3 py-2 outline-none border-r border-slate-800 cursor-pointer">
+                  <option>Tout</option>
+                  <option>Code</option>
+                  <option>Design</option>
+                </select>
+                <input type="text" placeholder="Rechercher..." class="flex-1 bg-transparent px-4 py-2 text-xs text-white placeholder-slate-500 outline-none">
+                <button class="px-4 py-2 text-xs font-bold text-white bg-brand-600 hover:bg-brand-500 transition">Chercher</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 14: Stepper Horizontal -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Stepper Horizontal</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="flex items-center w-full max-w-md justify-between relative">
+                <div class="absolute left-0 right-0 top-1/2 h-0.5 bg-slate-800 -translate-y-1/2 z-0"></div>
+                <!-- Step 1 Done -->
+                <div class="z-10 flex flex-col items-center">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs text-white" style="background:#7c3aed; border:2px solid #7c3aed;">✓</div>
+                  <span class="text-[10px] text-white font-semibold mt-1.5">Compte</span>
+                </div>
+                <!-- Step 2 Active -->
+                <div class="z-10 flex flex-col items-center">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs text-brand-400" style="background:#0f172a; border:2px solid #7c3aed;">2</div>
+                  <span class="text-[10px] text-brand-400 font-bold mt-1.5">Paiement</span>
+                </div>
+                <!-- Step 3 Pending -->
+                <div class="z-10 flex flex-col items-center">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center font-semibold text-xs text-slate-500" style="background:#0f172a; border:2px solid #1e293b;">3</div>
+                  <span class="text-[10px] text-slate-500 mt-1.5">Terminé</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 15: Sélecteur de Thème -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Sélecteur de Thème Dark/Light</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center" data-component>
+              <div class="flex items-center gap-1 p-1 rounded-full border border-slate-800 bg-slate-950/60">
+                <button class="p-2 rounded-full text-slate-500 hover:text-white transition"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M14 12a2 2 0 11-4 0 2 2 0 014 0z"/></svg></button>
+                <button class="p-2 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 16: Tags Filtrables Actifs -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Filtres Actifs (Chips)</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex flex-wrap gap-2 justify-center items-center" data-component>
+              <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-500/10 border border-brand-500/25 text-brand-400">
+                Catégorie: SaaS
+                <button class="hover:text-white transition"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+              </div>
+              <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-500/10 border border-brand-500/25 text-brand-400">
+                Prix: &lt; 50€
+                <button class="hover:text-white transition"><svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 15. CONTENU & SOCIAL                                    -->
+        <!-- ======================================================= -->
+        <section id="section-contenu" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Contenu & Social</h2>
+            <p class="text-slate-400">Témoignages clients, profils, timelines et éléments de partage.</p>
+          </div>
+
+          <!-- Component 17: Témoignage Simple -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Témoignage Client Simple</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center" data-component>
+              <div class="w-full max-w-sm p-6 rounded-2xl border border-slate-800 bg-slate-950/40">
+                <div class="flex text-amber-400 text-sm mb-4">★★★★★</div>
+                <p class="text-sm text-slate-300 italic leading-relaxed mb-6">"Ce UI Kit a complètement changé notre vitesse de prototypage. La copie en un clic est magique."</p>
+                <div class="flex items-center gap-3">
+                  <img src="https://i.pravatar.cc/150?u=jean" class="w-10 h-10 rounded-full object-cover">
+                  <div>
+                    <h4 class="text-xs font-bold text-white">Jean-Pierre G.</h4>
+                    <p class="text-[10px] text-slate-500">Co-fondateur, TechScale</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 18: Témoignage Glass Grille -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Témoignage Glassmorphism</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center" data-component>
+              <div class="w-full max-w-md p-6 rounded-2xl glass relative overflow-hidden">
+                <span class="absolute right-4 top-2 text-7xl font-serif text-slate-800/40 select-none">“</span>
+                <p class="relative z-10 text-sm text-slate-200 leading-relaxed mb-6">"Le design est moderne, les transitions sont parfaites. Pas de fioritures ou de dépendances inutiles, juste du pur HTML et Tailwind CSS."</p>
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-xs" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);">ML</div>
+                  <div>
+                    <h4 class="text-xs font-bold text-white">Marie Lemoine</h4>
+                    <p class="text-[10px] text-brand-400">Développeuse Freelance</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 19: Grille des Collaborateurs -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Carte Profil Équipe</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center" data-component>
+              <div class="w-64 p-5 rounded-2xl border border-slate-800 bg-slate-950/40 text-center relative group">
+                <img src="https://i.pravatar.cc/150?u=lucas" class="w-20 h-20 rounded-full object-cover mx-auto border-2 border-slate-800 group-hover:border-brand-500 transition-colors duration-300">
+                <h4 class="font-bold text-white text-sm mt-4">Lucas Bernard</h4>
+                <p class="text-xs text-slate-500 mt-1">Lead Architect</p>
+                <div class="flex justify-center gap-3 mt-4 text-slate-500">
+                  <a href="#" class="hover:text-white transition">🐦 Twitter</a>
+                  <a href="#" class="hover:text-white transition">💻 GitHub</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 20: Section Partenaires -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Logo Cloud Partenaires</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-center w-full max-w-lg opacity-40">
+                <span class="text-center text-sm font-black text-slate-400 hover:text-white hover:opacity-100 cursor-pointer transition select-none">STRIPE</span>
+                <span class="text-center text-sm font-black text-slate-400 hover:text-white hover:opacity-100 cursor-pointer transition select-none">SUPABASE</span>
+                <span class="text-center text-sm font-black text-slate-400 hover:text-white hover:opacity-100 cursor-pointer transition select-none">VERCEL</span>
+                <span class="text-center text-sm font-black text-slate-400 hover:text-white hover:opacity-100 cursor-pointer transition select-none">GITHUB</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 21: Carte d'Auteur / Profil -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Carte de Profil Premium</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center" data-component>
+              <div class="w-80 rounded-2xl border border-slate-800 overflow-hidden" style="background:#0f172a;">
+                <div class="h-24 bg-gradient-to-r from-brand-600 to-cyan-500"></div>
+                <div class="px-5 pb-5 relative">
+                  <img src="https://i.pravatar.cc/150?u=emmanuel" class="w-16 h-16 rounded-full border-4 border-slate-900 object-cover absolute -top-8 left-4">
+                  <div class="pt-10 flex justify-between items-start">
+                    <div>
+                      <h4 class="font-bold text-white text-sm">Emmanuel Creed</h4>
+                      <p class="text-[10px] text-slate-500">Créateur de Chariow</p>
+                    </div>
+                    <button class="px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-brand-600 hover:bg-brand-500 transition shadow-lg shadow-brand-500/20">Suivre</button>
+                  </div>
+                  <p class="text-xs text-slate-400 mt-4 leading-relaxed">Création de solutions open source gratuites pour booster la productivité des développeurs.</p>
+                  <div class="flex gap-4 mt-4 pt-4 border-t border-slate-800 text-xs">
+                    <div><span class="font-black text-white">4.8k</span> <span class="text-slate-500">Abonnés</span></div>
+                    <div><span class="font-black text-white">124</span> <span class="text-slate-500">Projets</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 22: Flux d'Activité -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Timeline d'Activité</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="relative pl-6 border-l-2 border-slate-800 space-y-6 max-w-xs">
+                <div class="relative">
+                  <span class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-brand-500 border-4 border-slate-950"></span>
+                  <h4 class="text-xs font-bold text-white">Mise à jour v3.0 publiée</h4>
+                  <p class="text-[10px] text-slate-500 mt-0.5">Il y a 10 minutes</p>
+                </div>
+                <div class="relative">
+                  <span class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-cyan-500 border-4 border-slate-950"></span>
+                  <h4 class="text-xs font-bold text-white">Nouveau template importé</h4>
+                  <p class="text-[10px] text-slate-500 mt-0.5">Il y a 2 heures</p>
+                </div>
+                <div class="relative">
+                  <span class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-slate-700 border-4 border-slate-950"></span>
+                  <h4 class="text-xs font-bold text-slate-400">Maintenance hebdomadaire</h4>
+                  <p class="text-[10px] text-slate-500 mt-0.5">Hier</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 23: Carte d'Article -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Carte Article de Blog</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center" data-component>
+              <div class="w-72 rounded-2xl border border-slate-800 overflow-hidden group cursor-pointer" style="background:#0f172a;">
+                <div class="h-40 overflow-hidden bg-slate-850 relative">
+                  <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="p-4">
+                  <span class="text-[9px] font-bold text-brand-400 uppercase tracking-widest">Technologie</span>
+                  <h4 class="font-bold text-white text-sm mt-1.5 leading-snug group-hover:text-brand-300 transition">Comment intégrer Tailwind v3 dans votre workflow en 2026</h4>
+                  <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">Astuces et conseils de configuration avancée.</p>
+                  <div class="flex items-center justify-between mt-4 pt-3 border-t border-slate-800/70">
+                    <span class="text-[10px] text-slate-500">5 min de lecture</span>
+                    <span class="text-xs text-brand-400 font-bold group-hover:translate-x-1 transition-transform inline-block">Lire →</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 24: Carte Vidéo Mockup -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Lecteur Vidéo Mockup</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center" data-component>
+              <div class="w-80 rounded-2xl overflow-hidden border border-slate-800 relative group aspect-video">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/40 flex items-center justify-center">
+                  <button class="w-12 h-12 rounded-full flex items-center justify-center text-white border border-white/20 hover:scale-110 hover:bg-white/10 transition duration-300" style="background:rgba(255,255,255,0.15); backdrop-filter:blur(8px);">
+                    <svg class="w-5 h-5 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                </div>
+                <span class="absolute bottom-3 right-3 px-2 py-0.5 rounded text-[10px] font-bold text-white bg-slate-950/80 border border-slate-800">12:34</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 25: Commentaire de Blog -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Zone de Commentaire</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="w-full max-w-md p-4 rounded-xl border border-slate-800 bg-slate-950/30">
+                <div class="flex items-center gap-3 mb-3">
+                  <img src="https://i.pravatar.cc/150?u=sophie" class="w-8 h-8 rounded-full object-cover">
+                  <div>
+                    <h4 class="text-xs font-bold text-white">Sophie Lambert</h4>
+                    <p class="text-[9px] text-slate-500">Il y a 3 heures</p>
+                  </div>
+                </div>
+                <p class="text-xs text-slate-300 leading-relaxed">Le guide pour le déploiement Vercel est super utile, merci pour ce partage gratuit !</p>
+                <div class="flex gap-4 mt-3 text-[10px] font-bold text-slate-500">
+                  <button class="hover:text-white transition">👍 Utile (12)</button>
+                  <button class="hover:text-white transition">💬 Répondre</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 26: Boîte de Partage Social -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Boîte de Partage Social</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="w-full max-w-sm p-4 rounded-xl border border-slate-800 bg-slate-950/40 text-center">
+                <h4 class="text-xs font-bold text-white mb-3">Partager cette ressource</h4>
+                <div class="flex gap-2">
+                  <input type="text" readonly value="https://chariow.com/ui-kit" class="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-[10px] text-slate-400 outline-none">
+                  <button class="px-3 py-1.5 rounded-lg text-[10px] font-bold text-white bg-brand-600 hover:bg-brand-500 transition">Copier</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 16. MARKETING & CTAs                                    -->
+        <!-- ======================================================= -->
+        <section id="section-marketing" class="section space-y-8">
+          <div class="mb-8">
+            <h2 class="text-3xl font-black text-white tracking-tight mb-1">Marketing & CTAs</h2>
+            <p class="text-slate-400">Sections de conversion, bannières d'annonces et boîtes d'appel à l'action.</p>
+          </div>
+
+          <!-- Component 27: Bannière d'Annonce Top -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Bannière Promo Top</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-6 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="w-full max-w-lg rounded-xl p-3 flex items-center justify-between gap-3 text-xs" style="background:linear-gradient(90deg, #7c3aed, #06b6d4);">
+                <div class="flex items-center gap-2 text-white font-bold">
+                  <span>🚀</span>
+                  <span>Offre de lancement : -50% sur la licence à vie avec le code CHARIOW50</span>
+                </div>
+                <button class="text-white/70 hover:text-white transition"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 28: Section Fonctionnalités Icone -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Carte Feature avec Icône Glow</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center" data-component>
+              <div class="w-72 p-6 rounded-2xl border border-slate-800 relative overflow-hidden" style="background:#0f172a;">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-5" style="background:rgba(124,58,237,0.1); border:1px solid rgba(124,58,237,0.25); filter:drop-shadow(0 0 4px rgba(124,58,237,0.35));">
+                  <span class="text-brand-400 text-lg">⚡</span>
+                </div>
+                <h4 class="font-bold text-white text-base">Performances Extrêmes</h4>
+                <p class="text-xs text-slate-400 mt-2.5 leading-relaxed">Chargement instantané, structure ultra-légère et pas de scripts tiers bloquants.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 29: Comparaison de Fonctionnalités -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Tableau de Comparaison Simple</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-6 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="w-full max-w-md rounded-xl border border-slate-800 bg-slate-950/40 overflow-hidden text-xs">
+                <table class="w-full text-left">
+                  <thead class="border-b border-slate-800 bg-slate-900/40 text-slate-400 font-semibold uppercase">
+                    <tr>
+                      <th class="px-4 py-2.5">Fonction</th>
+                      <th class="px-4 py-2.5 text-center">Free</th>
+                      <th class="px-4 py-2.5 text-center text-brand-400">Pro</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/50 text-slate-300">
+                    <tr>
+                      <td class="px-4 py-2.5 font-medium">Nb de Projets</td>
+                      <td class="px-4 py-2.5 text-center">3</td>
+                      <td class="px-4 py-2.5 text-center font-bold text-brand-400">Illimité</td>
+                    </tr>
+                    <tr>
+                      <td class="px-4 py-2.5 font-medium">Export de Code</td>
+                      <td class="px-4 py-2.5 text-center text-red-500">✗</td>
+                      <td class="px-4 py-2.5 text-center text-green-400">✓</td>
+                    </tr>
+                    <tr>
+                      <td class="px-4 py-2.5 font-medium">Support Client</td>
+                      <td class="px-4 py-2.5 text-center">Email</td>
+                      <td class="px-4 py-2.5 text-center font-bold text-brand-400">24/7 Prioritaire</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 30: Sélecteur Annuel/Mensuel -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Sélecteur de Facturation</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center" data-component>
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-medium text-slate-400">Mensuel</span>
+                <button class="relative w-12 h-6 rounded-full bg-brand-600 transition" onclick="var sp=this.querySelector('span'); var act=sp.style.transform==='translateX(26px)'; sp.style.transform=act?'translateX(2px)':'translateX(26px)'">
+                  <span class="absolute top-1 left-0 w-4 h-4 rounded-full bg-white transition-transform" style="transform:translateX(26px);"></span>
+                </button>
+                <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                  Annuel
+                  <span class="px-1.5 py-0.5 rounded bg-brand-500/10 border border-brand-500/20 text-brand-400 text-[9px] font-black uppercase">-20%</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 31: Formulaire Newsletter Inline -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Newsletter Inline Glow</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="w-full max-w-md p-6 rounded-2xl border border-slate-800 bg-slate-950/40 relative overflow-hidden">
+                <h4 class="font-bold text-white text-sm mb-1">Restez informé</h4>
+                <p class="text-[11px] text-slate-500 mb-4">Recevez de nouveaux composants directement dans votre boîte mail.</p>
+                <div class="flex gap-2">
+                  <input type="email" placeholder="votre@email.com" class="flex-1 bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-600 outline-none">
+                  <button class="px-4 py-2 rounded-lg text-xs font-bold text-white bg-brand-600 hover:bg-brand-500 transition shadow-lg shadow-brand-500/20">S'abonner</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 32: Témoignage Grand Format -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Témoignage Grand Format</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="w-full max-w-lg text-center p-6 rounded-2xl border border-slate-800/50 bg-slate-950/30">
+                <span class="text-3xl text-brand-400 select-none">“</span>
+                <p class="text-base text-slate-200 italic leading-relaxed mb-6 font-medium">"Credson UI Kit a fait gagner un temps précieux à notre équipe de développement. Les boutons de copie directe simplifient tout."</p>
+                <h5 class="font-bold text-white text-xs">Arnaud Chevalier</h5>
+                <p class="text-[10px] text-slate-500 mt-0.5">Directeur Technique, NextGen</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 33: Carte d'Appel à l'Action (CTA Box) -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Encart CTA Premium</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-6 dot-grid flex justify-center items-center w-full" data-component>
+              <div class="w-full max-w-lg p-8 rounded-2xl border border-slate-800/50 relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6" style="background: linear-gradient(135deg, #1e1b4b, #030712);">
+                <div>
+                  <h4 class="text-lg font-black text-white">Prêt à propulser vos designs ?</h4>
+                  <p class="text-xs text-slate-400 mt-1.5 leading-relaxed">Téléchargez la version complète avec Figma et Tailwind natif.</p>
+                </div>
+                <button class="px-5 py-2.5 rounded-xl text-xs font-black text-white bg-brand-600 hover:bg-brand-500 transition shadow-lg shadow-brand-500/25 flex-shrink-0">Télécharger (Gratuit)</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 34: FAQ Interactive Simplifiée -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">FAQ Accordéon Simple</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-8 dot-grid w-full" data-component>
+              <div class="w-full max-w-md mx-auto space-y-2.5">
+                <div class="rounded-xl border border-slate-850 p-4" style="background:#0f172a;">
+                  <button class="w-full flex items-center justify-between text-left" onclick="var b=this.nextElementSibling; var i=this.querySelector('svg'); if(b.classList.contains('hidden')){ b.classList.remove('hidden'); i.style.transform='rotate(180deg)'; }else{ b.classList.add('hidden'); i.style.transform=''; }">
+                    <span class="text-xs font-bold text-white">Quelles sont les technologies pré-requises ?</span>
+                    <svg class="w-3.5 h-3.5 text-slate-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                  </button>
+                  <p class="text-[11px] text-slate-400 mt-2.5 leading-relaxed hidden">Simplement HTML5 de base et Tailwind CSS. Pas besoin de React, Vue, Svelte ou de frameworks complexes.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Component 35: Footer Minimaliste -->
+          <div class="rounded-2xl border border-slate-800/70 overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-slate-800/70 bg-slate-900/80 flex items-center justify-between">
+              <h3 class="font-semibold text-slate-200 text-sm">Footer Minimaliste</h3>
+              <button onclick="copyCode(this)" class="copy-btn inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition border border-slate-700/50">Copier le code</button>
+            </div>
+            <div class="p-6 dot-grid w-full" data-component>
+              <footer class="w-full py-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-[10px] text-slate-500">
+                <span>© 2026 Credson Studio.</span>
+                <div class="flex gap-4">
+                  <a href="#" class="hover:text-white transition">Portfolio</a>
+                  <a href="#" class="hover:text-white transition">GitHub</a>
+                </div>
+              </footer>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /max-w -->
+    </main>
+  </div>
+
+  <!-- Toast de copie -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2.5 px-5 py-3 rounded-xl shadow-2xl font-medium text-sm text-white z-50 opacity-0 pointer-events-none" style="background:#0f172a; border:1px solid rgba(139,92,246,0.4); box-shadow:0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(139,92,246,0.1);">
+    <svg class="w-5 h-5" style="color:#4ade80;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+    Code copié dans le presse-papiers !
+  </div>
+
+  <script>
+    // Navigation
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.sidebar-link').forEach(b => b.classList.remove('active'));
+
+      const section = document.getElementById('section-' + id);
+      const navBtn  = document.getElementById('nav-' + id);
+
+      if (section) section.classList.add('active');
+      if (navBtn)  navBtn.classList.add('active');
+
+      // Scroll to top of content
+      document.getElementById('main-content').scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Copy code
+    function copyCode(btn) {
+      const card   = btn.closest('.rounded-2xl');
+      const preview = card.querySelector('[data-component]');
+
+      if (!preview) { showToast('⚠ Zone de code introuvable'); return; }
+
+      const html = preview.innerHTML.trim();
+
+      // Clean: remove excessive whitespace between tags but keep structure
+      const cleaned = html
+        .split('\n')
+        .map(l => l.trimEnd())
+        .filter((l, i, arr) => !(l === '' && arr[i-1] === ''))
+        .join('\n');
+
+      navigator.clipboard.writeText(cleaned)
+        .then(() => showToast())
+        .catch(() => {
+          // Fallback
+          const ta = document.createElement('textarea');
+          ta.value = cleaned;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          showToast();
+        });
+    }
+
+    function showToast() {
+      const t = document.getElementById('toast');
+      t.style.opacity = '1';
+      t.style.pointerEvents = 'auto';
+      t.classList.add('toast-show');
+      t.classList.remove('toast-hide');
+      setTimeout(() => {
+        t.classList.add('toast-hide');
+        t.classList.remove('toast-show');
+        setTimeout(() => { t.style.opacity = '0'; t.style.pointerEvents = 'none'; }, 300);
+      }, 2500);
+    }
+
+    // FAQ toggle
+    function toggleFaq(btn) {
+      const body = btn.nextElementSibling;
+      const icon = btn.querySelector('svg');
+      const isOpen = !body.classList.contains('hidden');
+
+      if (isOpen) {
+        body.classList.add('hidden');
+        icon.style.transform = '';
+        icon.style.color = '#64748b';
+        btn.closest('.rounded-xl').style.background = '#0f172a';
+        btn.closest('.rounded-xl').style.border = '1px solid #1e293b';
+        btn.querySelector('span').style.color = '#cbd5e1';
+      } else {
+        body.classList.remove('hidden');
+        icon.style.transform = 'rotate(180deg)';
+        icon.style.color = '#a78bfa';
+        btn.closest('.rounded-xl').style.background = 'rgba(139,92,246,0.05)';
+        btn.closest('.rounded-xl').style.border = '1px solid rgba(139,92,246,0.3)';
+        btn.querySelector('span').style.color = '#fff';
+      }
+    }
+  </script>
+</body>
+</html>

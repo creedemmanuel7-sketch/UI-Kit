@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>À Propos — Credson UI Kit & Emmanuel Creed</title>
+  <meta name="description" content="Découvrez Credson UI Kit et son créateur Emmanuel Creed — développeur, designer et fondateur de Chariow. 70+ composants Tailwind CSS premium gratuits.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f5f3ff', 100: '#ede9fe', 200: '#ddd6fe',
+              300: '#c4b5fd', 400: '#a78bfa', 500: '#8b5cf6',
+              600: '#7c3aed', 700: '#6d28d9', 800: '#5b21b6',
+              900: '#4c1d95', 950: '#2e1065',
+            }
+          },
+          keyframes: {
+            float: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-12px)' } },
+            fadeIn: { from: { opacity: '0', transform: 'translateY(20px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+            pulseGlow: { '0%, 100%': { opacity: '0.3', transform: 'scale(1)' }, '50%': { opacity: '0.6', transform: 'scale(1.05)' } }
+          },
+          animation: {
+            float: 'float 6s ease-in-out infinite',
+            fadeIn: 'fadeIn 0.7s ease forwards',
+            'pulse-glow': 'pulseGlow 4s ease-in-out infinite'
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background-color: #030712; color: #f8fafc; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+    .dot-grid {
+      background-image: radial-gradient(circle, #1e293b 1px, transparent 1px);
+      background-size: 22px 22px;
+    }
+
+    .glass {
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    @keyframes shimmer-move {
+      from { background-position: 200% 0; }
+      to   { background-position: -200% 0; }
+    }
+    .shimmer-text {
+      background: linear-gradient(110deg, #a78bfa 30%, #22d3ee 50%, #a78bfa 70%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer-move 3s linear infinite;
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.25; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(1.08); }
+    }
+    .glow-blob { animation: glow-pulse 5s ease-in-out infinite; }
+
+    .card-hover {
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .skill-bar-inner {
+      transition: width 1.2s ease;
+    }
+
+    @keyframes ping {
+      75%, 100% { transform: scale(2); opacity: 0; }
+    }
+    .ping { animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+    @keyframes float-slow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .float-slow { animation: float-slow 6s ease-in-out infinite; }
+    .float-slow-delay { animation: float-slow 7s ease-in-out infinite; animation-delay: 1s; }
+
+    /* Section fade-in on scroll */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Nav active underline */
+    .nav-link {
+      position: relative;
+      transition: color 0.2s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #7c3aed, #06b6d4);
+      border-radius: 1px;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:hover { color: #a78bfa; }
+
+    /* Timeline */
+    .timeline-dot::before {
+      content: '';
+      position: absolute;
+      left: -29px;
+      top: 6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #7c3aed, #06b6d4);
+      box-shadow: 0 0 10px rgba(124,58,237,0.5);
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- ============================================================ -->
+  <!-- NAVBAR                                                       -->
+  <!-- ============================================================ -->
+  <nav class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 py-4" style="background:rgba(3,7,18,0.8); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,0.05);">
+    <a href="index.html" class="flex items-center gap-2.5 group">
+      <img src="favicon.svg" class="w-8 h-8 rounded-lg" alt="Credson UI Kit Logo">
+      <span class="font-black text-white tracking-tight">Credson <span class="text-brand-400">UI</span></span>
+    </a>
+    <div class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-400">
+      <a href="#a-propos"  class="nav-link">À Propos</a>
+      <a href="#le-kit"    class="nav-link">Le Kit</a>
+      <a href="#createur"  class="nav-link">Le Créateur</a>
+      <a href="#contact"   class="nav-link">Contact</a>
+    </div>
+    <a href="index.html" class="hidden md:flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-bold text-white hover:opacity-90 transition hover:scale-105" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);">
+      Explorer le Kit →
+    </a>
+    <!-- Mobile CTA -->
+    <a href="index.html" class="md:hidden px-4 py-2 rounded-lg text-xs font-bold text-white" style="background:#7c3aed;">Explorer</a>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- HERO                                                         -->
+  <!-- ============================================================ -->
+  <section class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden pt-20">
+    <!-- Background glow blobs -->
+    <div class="glow-blob absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full pointer-events-none" style="background:#7c3aed; filter:blur(130px); opacity:0.18;"></div>
+    <div class="glow-blob absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full pointer-events-none" style="background:#06b6d4; filter:blur(120px); opacity:0.14; animation-delay:2.5s;"></div>
+
+    <!-- Floating decorative elements -->
+    <div class="float-slow absolute top-40 left-10 md:left-20 w-14 h-14 rounded-2xl glass border border-brand-500/20 flex items-center justify-center text-2xl hidden lg:flex">💻</div>
+    <div class="float-slow-delay absolute top-60 right-10 md:right-20 w-14 h-14 rounded-2xl glass border border-cyan-500/20 flex items-center justify-center text-2xl hidden lg:flex">🎨</div>
+    <div class="float-slow absolute bottom-48 left-16 w-12 h-12 rounded-xl glass border border-brand-500/15 flex items-center justify-center text-xl hidden lg:flex">⚡</div>
+    <div class="float-slow-delay absolute bottom-40 right-16 w-12 h-12 rounded-xl glass border border-cyan-500/15 flex items-center justify-center text-xl hidden lg:flex">🚀</div>
+
+    <!-- Dot grid overlay -->
+    <div class="absolute inset-0 dot-grid opacity-30 pointer-events-none"></div>
+
+    <div class="relative z-10 max-w-4xl">
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-semibold mb-8" style="background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.25); color:#a78bfa;">
+        <span class="relative flex h-2 w-2">
+          <span class="ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background:#a78bfa;"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2" style="background:#7c3aed;"></span>
+        </span>
+        Design × Code × Créativité
+      </div>
+
+      <!-- Title -->
+      <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight leading-none mb-6">
+        Le Projet <span class="shimmer-text">derrière le Kit.</span>
+      </h1>
+      <p class="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed mb-12">
+        Credson UI Kit est né d'une obsession simple : permettre aux développeurs africains et créateurs du monde entier de construire des interfaces modernes, rapidement et gratuitement.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a href="#createur" class="px-8 py-3.5 rounded-xl font-bold text-white text-base hover:opacity-90 transition hover:scale-105" style="background:linear-gradient(135deg,#7c3aed,#06b6d4); box-shadow:0 8px 25px rgba(124,58,237,0.3);">
+          Découvrir le Créateur
+        </a>
+        <a href="index.html" class="px-8 py-3.5 rounded-xl font-semibold text-slate-200 text-base border border-slate-700 hover:bg-slate-800 transition">
+          Explorer les composants
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-10 flex flex-col items-center gap-2 text-slate-600 text-xs">
+      <span>Défiler</span>
+      <div class="w-px h-12 bg-gradient-to-b from-slate-700 to-transparent"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- STATS RAPIDES                                               -->
+  <!-- ============================================================ -->
+  <section class="reveal py-16 px-6 border-y border-slate-800/60" id="a-propos">
+    <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="text-center card-hover p-6 rounded-2xl glass">
+        <div class="text-4xl font-black text-white mb-1">70+</div>
+        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Composants</div>
+      </div>
+      <div class="text-center card-hover p-6 rounded-2xl glass">
+        <div class="text-4xl font-black mb-1 shimmer-text">16</div>
+        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Sections</div>
+      </div>
+      <div class="text-center card-hover p-6 rounded-2xl glass">
+        <div class="text-4xl font-black text-white mb-1">100%</div>
+        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Gratuit</div>
+      </div>
+      <div class="text-center card-hover p-6 rounded-2xl glass">
+        <div class="text-4xl font-black text-white mb-1">1 clic</div>
+        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Copier le code</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- LE KIT — PRÉSENTATION                                       -->
+  <!-- ============================================================ -->
+  <section class="reveal py-24 px-6" id="le-kit">
+    <div class="max-w-5xl mx-auto">
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold text-brand-400 mb-4" style="background:rgba(139,92,246,0.08); border:1px solid rgba(139,92,246,0.2);">LE PRODUIT</span>
+        <h2 class="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">
+          Qu'est-ce que Credson UI Kit ?
+        </h2>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
+          Une bibliothèque de composants Tailwind CSS conçus pour aller vite. Chaque élément est pixel-perfect, testé, et prêt à coller dans votre code source.
+        </p>
+      </div>
+
+      <!-- Features grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <!-- Feature 1 -->
+        <div class="card-hover p-7 rounded-2xl border border-slate-800/70 relative overflow-hidden" style="background:#0f172a;">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:rgba(124,58,237,0.1); border:1px solid rgba(124,58,237,0.2);">
+            <svg class="w-6 h-6 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          </div>
+          <h3 class="font-bold text-white text-base mb-2">Copie en 1 clic</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Chaque composant intègre un bouton de copie intelligente. Le code est propre, formaté et prêt à utiliser dans votre projet.</p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="card-hover p-7 rounded-2xl border relative overflow-hidden" style="background:linear-gradient(135deg,#1e1b4b,#0f172a); border-color:rgba(139,92,246,0.35);">
+          <div class="absolute top-0 left-0 right-0 h-0.5" style="background:linear-gradient(90deg,#7c3aed,#06b6d4);"></div>
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.25);">
+            <svg class="w-6 h-6 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+          </div>
+          <h3 class="font-bold text-white text-base mb-2">Dark Mode Natif</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Design système entièrement pensé pour les interfaces sombres avec effets glassmorphism, glow et micro-animations premium.</p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="card-hover p-7 rounded-2xl border border-slate-800/70 relative overflow-hidden" style="background:#0f172a;">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:rgba(6,182,212,0.1); border:1px solid rgba(6,182,212,0.2);">
+            <svg class="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          </div>
+          <h3 class="font-bold text-white text-base mb-2">100% Responsive</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Chaque composant est testé sur mobile, tablette et desktop. Aucune dépendance externe — juste du HTML5 et Tailwind CSS.</p>
+        </div>
+      </div>
+
+      <!-- Categories showcase -->
+      <div class="p-8 rounded-2xl border border-slate-800/70 glass">
+        <h3 class="font-black text-white text-lg mb-6">Les 16 catégories incluses</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">🔘 Boutons & CTAs</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">🏷️ Badges & Tags</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">👤 Avatars & Profils</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">⌨️ Inputs & Toggles</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">🃏 Cartes & Pricing</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">🪟 Modales & Dialogs</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">📋 Menus Déroulants</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">🔔 Alertes & Toasts</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">🧭 Navbars</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">🚀 Hero Sections</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">📊 Stats & FAQ</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">🦶 Footers</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">📈 Tableaux & Données</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">🧭 Navigation & Filtres</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">📝 Contenu & Social</div>
+          <div class="p-3 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300 flex items-center gap-2 hover:border-brand-500/40 hover:text-brand-300 transition cursor-pointer" style="background:#030712;">✨ Marketing & CTAs</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- LE CRÉATEUR                                                  -->
+  <!-- ============================================================ -->
+  <section class="reveal py-24 px-6" id="createur" style="background:linear-gradient(180deg, #030712 0%, #0a0318 50%, #030712 100%);">
+    <div class="max-w-5xl mx-auto">
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold text-cyan-400 mb-4" style="background:rgba(6,182,212,0.08); border:1px solid rgba(6,182,212,0.2);">LE CRÉATEUR</span>
+        <h2 class="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">
+          Salut, c'est Crédo 👋
+        </h2>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
+          Étudiant en IA & Big Data, développeur et designer basé au Togo. Je construis des outils, apps et ressources pour la communauté des créateurs.
+        </p>
+      </div>
+
+      <!-- Profile card -->
+      <div class="flex flex-col lg:flex-row gap-10 items-start">
+        <!-- Left: Profile -->
+        <div class="w-full lg:w-80 flex-shrink-0">
+          <div class="rounded-2xl border border-slate-800 overflow-hidden" style="background:#0f172a;">
+            <!-- Cover -->
+            <div class="h-32 relative overflow-hidden" style="background:linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);">
+              <div class="absolute inset-0 dot-grid opacity-20"></div>
+              <div class="glow-blob absolute -top-10 -left-10 w-32 h-32 rounded-full" style="background:#a78bfa; filter:blur(40px); opacity:0.5;"></div>
+            </div>
+            <!-- Info -->
+            <div class="px-5 pb-6 relative">
+              <!-- Avatar -->
+              <div class="relative -mt-10 mb-4">
+                <div class="w-20 h-20 rounded-full border-4 border-slate-900 flex items-center justify-center font-black text-white text-3xl" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);">
+                  CA
+                </div>
+                <span class="absolute bottom-0 right-8 w-4 h-4 rounded-full border-2 border-slate-900" style="background:#22c55e;"></span>
+              </div>
+              <h3 class="font-black text-white text-lg leading-tight">Crédo ADJIGNON</h3>
+              <p class="text-xs text-brand-400 font-semibold mt-0.5">Étudiant IA & Big Data · ESGIS Togo</p>
+              <p class="text-xs text-slate-500 mt-1 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                Lomé, Togo 🇹🇬
+              </p>
+              <p class="text-sm text-slate-400 mt-4 leading-relaxed">
+                Je suis passionné par le développement (Android, Kotlin, React Native, Python, C) et la conception d'interfaces modernes (Glassmorphism). Fondateur de Credson Studio.
+              </p>
+
+              <!-- Tags -->
+              <div class="flex flex-wrap gap-2 mt-5">
+                <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide text-brand-400" style="background:rgba(139,92,246,0.1); border:1px solid rgba(139,92,246,0.2);">Android / Kotlin</span>
+                <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide text-cyan-400" style="background:rgba(6,182,212,0.1); border:1px solid rgba(6,182,212,0.2);">React Native</span>
+                <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide text-amber-400" style="background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.2);">Python / IA</span>
+                <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide text-green-400" style="background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.2);">Tailwind CSS</span>
+              </div>
+
+              <!-- Social -->
+              <div class="flex gap-2 mt-5">
+                <a href="https://creedemmanuel7-sketch.github.io/mon-portfolio" target="_blank"
+                   class="flex-1 py-2 rounded-xl text-xs font-bold text-white text-center transition hover:opacity-90" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);">
+                  Portfolio
+                </a>
+                <a href="https://wa.me/22896569761" target="_blank"
+                   class="flex-1 py-2 rounded-xl text-xs font-bold text-white text-center border border-slate-700 hover:bg-slate-800 transition">
+                  WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Story + Skills + Timeline -->
+        <div class="flex-1 space-y-8">
+
+          <!-- Mon histoire -->
+          <div class="card-hover p-7 rounded-2xl border border-slate-800/70" style="background:#0f172a;">
+            <h3 class="font-black text-white text-base mb-4 flex items-center gap-2">
+              <span class="text-xl">📖</span> Mon histoire
+            </h3>
+            <div class="space-y-4 text-sm text-slate-400 leading-relaxed">
+              <p>
+                Je suis <strong>Crédo ADJIGNON</strong>, étudiant en Licence 1 Informatique (IA & Big Data) à l'ESGIS Togo. Tout a commencé avec une passion pour la création d'interfaces modernes et de logiciels qui facilitent la vie.
+              </p>
+              <p>
+                Je développe activement des applications mobiles (MesPensees, SoundGroove) et des outils pour développeurs (Snippet-Vault Local). J'ai fondé <strong class="text-white">Credson Studio</strong> pour partager mon apprentissage et créer des ressources de qualité.
+              </p>
+              <p>
+                Aujourd'hui, via la boutique en ligne <strong class="text-white">Chariow</strong>, je mets à disposition des templates, guides et UI Kits (comme celui-ci) avec une esthétique premium axée sur le <em>Glassmorphism</em> et les thèmes sombres vibrants.
+              </p>
+            </div>
+          </div>
+
+          <!-- Compétences -->
+          <div class="card-hover p-7 rounded-2xl border border-slate-800/70" style="background:#0f172a;">
+            <h3 class="font-black text-white text-base mb-6 flex items-center gap-2">
+              <span class="text-xl">⚡</span> Compétences clés
+            </h3>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-xs font-semibold mb-2">
+                  <span class="text-slate-300">Android / Kotlin / Jetpack Compose</span>
+                  <span class="text-brand-400">85%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-900 overflow-hidden">
+                  <div class="h-full rounded-full skill-bar-inner" style="width:85%; background:linear-gradient(90deg,#7c3aed,#a78bfa);"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs font-semibold mb-2">
+                  <span class="text-slate-300">Python / IA / Big Data / C</span>
+                  <span class="text-brand-400">80%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-900 overflow-hidden">
+                  <div class="h-full rounded-full skill-bar-inner" style="width:80%; background:linear-gradient(90deg,#7c3aed,#06b6d4);"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs font-semibold mb-2">
+                  <span class="text-slate-300">React Native / React / Tailwind CSS</span>
+                  <span class="text-cyan-400">90%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-900 overflow-hidden">
+                  <div class="h-full rounded-full skill-bar-inner" style="width:90%; background:linear-gradient(90deg,#06b6d4,#22d3ee);"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs font-semibold mb-2">
+                  <span class="text-slate-300">UI/UX Design (Glassmorphism, Liquid)</span>
+                  <span class="text-amber-400">88%</span>
+                </div>
+                <div class="h-2 rounded-full bg-slate-900 overflow-hidden">
+                  <div class="h-full rounded-full skill-bar-inner" style="width:88%; background:linear-gradient(90deg,#f59e0b,#fbbf24);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline -->
+          <div class="card-hover p-7 rounded-2xl border border-slate-800/70" style="background:#0f172a;">
+            <h3 class="font-black text-white text-base mb-6 flex items-center gap-2">
+              <span class="text-xl">🗓️</span> Parcours
+            </h3>
+            <div class="relative pl-6 border-l-2 border-slate-800 space-y-6">
+              <div class="relative timeline-dot">
+                <h4 class="text-sm font-bold text-white">Fondation de Chariow</h4>
+                <p class="text-xs text-brand-400 font-semibold mt-0.5">2026</p>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Lancement de la boutique de ressources numériques et du canal WhatsApp Credson Studio pour diffuser des outils gratuits de qualité.</p>
+              </div>
+              <div class="relative timeline-dot">
+                <h4 class="text-sm font-bold text-white">Credson UI Kit v1.0</h4>
+                <p class="text-xs text-cyan-400 font-semibold mt-0.5">Début 2026</p>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Publication du premier UI Kit Tailwind CSS avec 15 composants. Gratuit, open source, avec bouton copie en 1 clic.</p>
+              </div>
+              <div class="relative timeline-dot">
+                <h4 class="text-sm font-bold text-white">Credson UI Kit v3.0</h4>
+                <p class="text-xs text-green-400 font-semibold mt-0.5">Juin 2026 · Maintenant</p>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">Refonte complète avec 70+ composants sur 16 catégories, graphiques SVG, tableaux de données, timeline et bien plus.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TÉMOIGNAGES                                                  -->
+  <!-- ============================================================ -->
+  <section class="reveal py-24 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold text-amber-400 mb-4" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.2);">ILS EN PARLENT</span>
+        <h2 class="text-3xl md:text-4xl font-black text-white tracking-tight">Ce que disent les utilisateurs</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Témoignage 1 -->
+        <div class="card-hover p-6 rounded-2xl glass">
+          <div class="flex text-amber-400 text-sm mb-4">★★★★★</div>
+          <p class="text-sm text-slate-300 italic leading-relaxed mb-5">"Le bouton de copie est génial ! J'ai pu intégrer 5 composants dans mon projet en moins de 10 minutes. Design ultra premium."</p>
+          <div class="flex items-center gap-3 pt-4 border-t border-slate-800/60">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs text-white" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);">AD</div>
+            <div>
+              <p class="text-xs font-bold text-white">Amadou Diallo</p>
+              <p class="text-[10px] text-slate-500">Dev Fullstack, Dakar</p>
+            </div>
+          </div>
+        </div>
+        <!-- Témoignage 2 -->
+        <div class="card-hover p-6 rounded-2xl border relative overflow-hidden" style="background:linear-gradient(135deg,#1e1b4b,#0f172a); border-color:rgba(139,92,246,0.3);">
+          <div class="absolute top-0 left-0 right-0 h-0.5" style="background:linear-gradient(90deg,#7c3aed,#06b6d4);"></div>
+          <div class="flex text-amber-400 text-sm mb-4">★★★★★</div>
+          <p class="text-sm text-slate-300 italic leading-relaxed mb-5">"J'utilise ce kit comme base pour tous mes projets clients. Le dark mode glassmorphism est exactement ce qu'ils recherchent. Merci !"</p>
+          <div class="flex items-center gap-3 pt-4 border-t border-slate-800/60">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs text-white" style="background:linear-gradient(135deg,#06b6d4,#a78bfa);">SK</div>
+            <div>
+              <p class="text-xs font-bold text-white">Sylvie Konan</p>
+              <p class="text-[10px] text-brand-400">Designer UI, Abidjan</p>
+            </div>
+          </div>
+        </div>
+        <!-- Témoignage 3 -->
+        <div class="card-hover p-6 rounded-2xl glass">
+          <div class="flex text-amber-400 text-sm mb-4">★★★★★</div>
+          <p class="text-sm text-slate-300 italic leading-relaxed mb-5">"Le fait que ce soit entièrement gratuit et bien documenté, c'est rare. Emmanuel a créé quelque chose de vraiment utile pour notre communauté."</p>
+          <div class="flex items-center gap-3 pt-4 border-t border-slate-800/60">
+            <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs text-white" style="background:linear-gradient(135deg,#f59e0b,#ec4899);">MT</div>
+            <div>
+              <p class="text-xs font-bold text-white">Marc Touré</p>
+              <p class="text-[10px] text-slate-500">Entrepreneur, Lomé</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- CONTACT                                                      -->
+  <!-- ============================================================ -->
+  <section class="reveal py-24 px-6" id="contact">
+    <div class="max-w-2xl mx-auto text-center">
+      <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold text-green-400 mb-6" style="background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.2);">ME CONTACTER</span>
+      <h2 class="text-4xl font-black text-white tracking-tight mb-4">Vous avez une question ?</h2>
+      <p class="text-slate-400 leading-relaxed mb-10">
+        Que ce soit pour un bug, une suggestion de composant, une collaboration ou juste pour dire bonjour — je réponds toujours. Le moyen le plus rapide : <strong class="text-white">WhatsApp</strong>.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <!-- WhatsApp -->
+        <a href="https://wa.me/22896569761" target="_blank"
+           class="flex items-center justify-center gap-3 px-7 py-4 rounded-2xl font-bold text-white text-sm transition hover:scale-105" style="background:linear-gradient(135deg,#16a34a,#15803d); box-shadow:0 8px 25px rgba(22,163,74,0.3);">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          +228 96 56 97 61
+        </a>
+        <!-- Email -->
+        <a href="mailto:creedemmanuel7@gmail.com"
+           class="flex items-center justify-center gap-3 px-7 py-4 rounded-2xl font-bold text-slate-200 text-sm border border-slate-700 hover:bg-slate-800 transition">
+          <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          creedemmanuel7@gmail.com
+        </a>
+        <!-- Portfolio -->
+        <a href="https://creedemmanuel7-sketch.github.io/mon-portfolio" target="_blank"
+           class="flex items-center justify-center gap-3 px-7 py-4 rounded-2xl font-bold text-slate-200 text-sm border border-slate-700 hover:bg-slate-800 transition">
+          <svg class="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+          Mon Portfolio
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- CTA FINAL                                                    -->
+  <!-- ============================================================ -->
+  <section class="reveal py-24 px-6">
+    <div class="max-w-3xl mx-auto">
+      <div class="p-10 md:p-14 rounded-3xl relative overflow-hidden text-center" style="background:linear-gradient(135deg, #1e1b4b 0%, #030712 60%); border:1px solid rgba(139,92,246,0.3);">
+        <!-- Glow -->
+        <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-64 h-64 rounded-full pointer-events-none" style="background:#7c3aed; filter:blur(80px); opacity:0.2;"></div>
+        <div class="absolute top-0 left-0 right-0 h-0.5" style="background:linear-gradient(90deg, transparent, #7c3aed, #06b6d4, transparent);"></div>
+        <div class="relative z-10">
+          <div class="text-5xl mb-5">🚀</div>
+          <h2 class="text-3xl md:text-4xl font-black text-white mb-4">Prêt à construire quelque chose d'incroyable ?</h2>
+          <p class="text-slate-400 text-base mb-8 max-w-md mx-auto leading-relaxed">
+            70+ composants Tailwind CSS premium. Entièrement gratuits. Disponibles maintenant.
+          </p>
+          <a href="index.html" class="inline-flex items-center gap-2 px-10 py-4 rounded-2xl font-black text-white text-base hover:opacity-90 transition hover:scale-105" style="background:linear-gradient(135deg,#7c3aed,#06b6d4); box-shadow:0 12px 30px rgba(124,58,237,0.35);">
+            Ouvrir le UI Kit
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- FOOTER                                                       -->
+  <!-- ============================================================ -->
+  <footer class="py-10 px-6 border-t border-slate-800/70" style="background:#030712;">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <img src="favicon.svg" class="w-7 h-7 rounded-lg" alt="Logo">
+        <span class="font-bold text-white text-sm">Credson <span class="text-brand-400">UI</span></span>
+        <span class="text-slate-600 text-xs">×</span>
+        <span class="text-slate-500 text-xs font-semibold">Chariow</span>
+      </div>
+      <p class="text-xs text-slate-600 text-center">
+        Fait avec <span class="text-red-500">❤️</span> par <strong class="text-slate-400">Crédo ADJIGNON</strong> depuis le Togo 🇹🇬 · 2026
+      </p>
+      <div class="flex gap-5 text-xs text-slate-600 font-medium">
+        <a href="index.html" class="hover:text-white transition">Kit</a>
+        <a href="#createur" class="hover:text-white transition">À propos</a>
+        <a href="https://wa.me/22896569761" target="_blank" class="hover:text-white transition">WhatsApp</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Intersection Observer for reveal animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
